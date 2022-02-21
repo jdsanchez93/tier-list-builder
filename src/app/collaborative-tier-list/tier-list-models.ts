@@ -1,6 +1,7 @@
 export interface TierList {
     tierListId: number,
-    name: string
+    name: string,
+    tierListRows: TierListRow[]
 }
 
 export interface TierListRow {

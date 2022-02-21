@@ -1,7 +1,8 @@
 import { CdkDragEnd } from '@angular/cdk/drag-drop';
 import { Component, OnInit } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { PositionalTierListItem, TierListRow } from '../tier-list-models';
+import { TierListService } from '../tier-list.service';
 
 @Component({
   selector: 'app-collaborative-tier-list',
@@ -10,30 +11,17 @@ import { PositionalTierListItem, TierListRow } from '../tier-list-models';
 })
 export class CollaborativeTierListComponent implements OnInit {
 
-  tierListItems$: Observable<PositionalTierListItem[]> = of([
-    {
-      positionalTierListItemId: 1,
-      label: 'test item',
-      positionX: 50,
-      positionY: 75
-    }
-  ]);
-  tierListRows$: Observable<TierListRow[]> = of([
-    {
-      tierListRowId: 1,
-      name: 'A'
-    },
-    {
-      tierListRowId: 2,
-      name: 'B'
-    },
-    {
-      tierListRowId: 3,
-      name: 'C'
-    }
-  ])
+  tierListItems$: Observable<PositionalTierListItem[]>;
+  tierListRows$: Observable<TierListRow[]>;
 
-  constructor() { }
+  constructor(private tls: TierListService) {
+    this.tierListRows$ = this.tls.getTierList(2).pipe(
+      map(t => t.tierListRows)
+    );
+
+    this.tierListItems$ = this.tls.getPositionalTierListItems(2);
+
+  }
 
   ngOnInit(): void {
   }
