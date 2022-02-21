@@ -1,1 +1,15 @@
-<p>collaborative-tier-list works!</p>
+<div class="tier-list-boundary">
+    <div *ngFor="let item of this.tierListItems$ | async" class="item" cdkDragBoundary=".tier-list-boundary" cdkDrag
+        [cdkDragFreeDragPosition]="{x: item.positionX, y: item.positionY}"
+        (cdkDragEnded)="drag($event, item.positionalTierListItemId)">
+        <div class="inner-grid-container">
+            <div style="align-self: center;">{{item.label}}</div>
+        </div>
+    </div>
+
+    <div class="tier-grid">
+        <div *ngFor="let row of this.tierListRows$ | async" class="tier-grid__row">
+            {{row.name}}
+        </div>
+    </div>
+</div>
