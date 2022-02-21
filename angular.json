@@ -76,7 +76,8 @@
               "browserTarget": "tier-list-builder:build:production"
             },
             "development": {
-              "browserTarget": "tier-list-builder:build:development"
+              "browserTarget": "tier-list-builder:build:development",
+              "proxyConfig": "src/proxy.conf.json"
             }
           },
           "defaultConfiguration": "development"
