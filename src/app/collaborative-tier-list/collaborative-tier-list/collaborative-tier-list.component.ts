@@ -1,8 +1,10 @@
 import { CdkDragEnd } from '@angular/cdk/drag-drop';
 import { Component, OnInit } from '@angular/core';
-import { map, Observable } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
+import { loadTierList } from '../state/actions';
+import { TierListState } from '../state/reducers';
 import { PositionalTierListItem, TierListRow } from '../tier-list-models';
-import { TierListService } from '../tier-list.service';
 
 @Component({
   selector: 'app-collaborative-tier-list',
@@ -11,19 +13,16 @@ import { TierListService } from '../tier-list.service';
 })
 export class CollaborativeTierListComponent implements OnInit {
 
-  tierListItems$: Observable<PositionalTierListItem[]>;
-  tierListRows$: Observable<TierListRow[]>;
+  tierListItems$: Observable<PositionalTierListItem[]> = this.store.select(state => state.tierList.items);
+  tierListRows$: Observable<TierListRow[]> = this.store.select(state => {
+    console.log(state)
+    return state.tierList.tierList.tierListRows
+  });
 
-  constructor(private tls: TierListService) {
-    this.tierListRows$ = this.tls.getTierList(2).pipe(
-      map(t => t.tierListRows)
-    );
-
-    this.tierListItems$ = this.tls.getPositionalTierListItems(2);
-
-  }
+  constructor(private store: Store<{ tierList: TierListState }>) { }
 
   ngOnInit(): void {
+    this.store.dispatch(loadTierList({tierListId: 2}))
   }
 
   drag(event: CdkDragEnd<any>, id: number) {
