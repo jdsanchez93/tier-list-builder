@@ -18,5 +18,17 @@ export const initialState: TierListState = {
 
 export const tierListReducer = createReducer(
     initialState,
-    on(TierListActions.loadTierListSuccess, (state, { tierList, positionalTierListItems }) => ({ tierList: tierList, items: positionalTierListItems }))
+    on(TierListActions.loadTierListSuccess, (state, { tierList, positionalTierListItems }) => ({
+        tierList: tierList,
+        items: positionalTierListItems
+    })),
+    on(TierListActions.updateItemSuccess, (state, { itemId, partialItem }) => {
+        const updatedItems = state.items.map(i => {
+            if (i.positionalTierListItemId === itemId) {
+                return { ...i, ...partialItem }
+            }
+            return i;
+        });
+        return { ...state, items: updatedItems };
+    })
 );

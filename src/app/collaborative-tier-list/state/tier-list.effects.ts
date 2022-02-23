@@ -3,7 +3,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { EMPTY, forkJoin } from 'rxjs';
 import { map, mergeMap, catchError } from 'rxjs/operators';
 import { TierListService } from '../tier-list.service';
-import { loadTierList, loadTierListSuccess } from './actions';
+import { loadTierList, loadTierListSuccess, updateItem, updateItemSuccess } from './actions';
 
 @Injectable()
 export class TierListEffects {
@@ -20,6 +20,14 @@ export class TierListEffects {
       )
     )
   ));
+
+  updateTierListItem$ = createEffect(() => this.actions$.pipe(
+    ofType(updateItem),
+    mergeMap(action => this.tierListService.patchPositionalTierListItem(action.itemId, action.partialItem).pipe(
+      map(x => updateItemSuccess({ itemId: action.itemId, partialItem: action.partialItem })),
+      catchError(() => EMPTY)
+    ))
+  ))
 
   constructor(
     private actions$: Actions,

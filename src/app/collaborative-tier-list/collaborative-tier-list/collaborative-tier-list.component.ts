@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable, of, switchMap, tap } from 'rxjs';
-import { loadTierList } from '../state/actions';
+import { loadTierList, updateItem } from '../state/actions';
 import { TierListState } from '../state/reducers';
 import { PositionalTierListItem, TierListRow } from '../tier-list-models';
 
@@ -15,10 +15,8 @@ import { PositionalTierListItem, TierListRow } from '../tier-list-models';
 export class CollaborativeTierListComponent implements OnInit {
 
   tierListItems$: Observable<PositionalTierListItem[]> = this.store.select(state => state.tierList.items);
-  tierListRows$: Observable<TierListRow[]> = this.store.select(state => {
-    console.log(state)
-    return state.tierList.tierList.tierListRows
-  });
+  // TODO fix object keys, state.tierList.tierList is confusing
+  tierListRows$: Observable<TierListRow[]> = this.store.select(state => state.tierList.tierList.tierListRows);
 
   constructor(
     private store: Store<{ tierList: TierListState }>,
@@ -37,9 +35,16 @@ export class CollaborativeTierListComponent implements OnInit {
 
   }
 
+  //TODO move this to new component
   drag(event: CdkDragEnd<any>, id: number) {
     const position = event.source.getFreeDragPosition();
-    console.log('CdkDragEnd', position);
+
+    const partialItem: Partial<PositionalTierListItem> = {
+      positionX: Math.trunc(position.x),
+      positionY: Math.trunc(position.y)
+    };
+
+    this.store.dispatch(updateItem({ itemId: id, partialItem: partialItem }));
   }
 
 }

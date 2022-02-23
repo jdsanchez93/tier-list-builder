@@ -17,4 +17,16 @@ export class TierListService {
   public getPositionalTierListItems(id: number): Observable<PositionalTierListItem[]> {
     return this.http.get<PositionalTierListItem[]>(`api/TierList/GetPositionalTierListItems/${id}`);
   }
+
+  public patchPositionalTierListItem(id: number, partialItem: Partial<PositionalTierListItem>) {
+    // TODO move this to central location
+    // TODO consider fixing cast to any
+    const patchObj = Object.keys(partialItem).map(key => ({
+        'path': `/${key}`,
+        'op': 'replace',
+        'value': (partialItem as any)[key]
+      })
+    )
+    return this.http.patch(`api/PositionalTierListItem/${id}`, patchObj);
+  }
 }
