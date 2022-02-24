@@ -6,7 +6,7 @@ import { CollaborativeTierListComponent } from './collaborative-tier-list/collab
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
-import { tierListReducer } from './state/reducers';
+import { tierListFeatureKey, tierListReducer } from './state/tier-list.reducer';
 import { TierListEffects } from './state/tier-list.effects';
 
 
@@ -18,7 +18,7 @@ import { TierListEffects } from './state/tier-list.effects';
     CommonModule,
     DragDropModule,
     CollaborativeTierListRoutingModule,
-    StoreModule.forRoot({tierList: tierListReducer}, {}),
+    StoreModule.forFeature(tierListFeatureKey, tierListReducer),
     EffectsModule.forRoot([TierListEffects])
   ]
 })

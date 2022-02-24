@@ -17,7 +17,7 @@ import { EffectsModule } from '@ngrx/effects';
     HttpClientModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    // StoreModule.forRoot({}, {}),
+    StoreModule.forRoot({}, {}),
     // EffectsModule.forRoot([])
   ],
   providers: [],

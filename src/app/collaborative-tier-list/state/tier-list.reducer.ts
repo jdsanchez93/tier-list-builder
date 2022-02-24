@@ -2,6 +2,8 @@ import { createReducer, on } from '@ngrx/store';
 import * as TierListActions from './actions';
 import { PositionalTierListItem, TierList } from '../tier-list-models';
 
+export const tierListFeatureKey = 'tierList';
+
 export interface TierListState {
     tierList: TierList,
     items: PositionalTierListItem[]
