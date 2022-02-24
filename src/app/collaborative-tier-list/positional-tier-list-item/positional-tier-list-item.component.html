@@ -1,0 +1,7 @@
+<div class="item" cdkDragBoundary=".tier-list-boundary" cdkDrag
+    [cdkDragFreeDragPosition]="{x: item.positionX, y: item.positionY}"
+    (cdkDragEnded)="drag($event, item.positionalTierListItemId)">
+    <div class="inner-grid-container">
+        <div style="align-self: center;">{{item.label}}</div>
+    </div>
+</div>

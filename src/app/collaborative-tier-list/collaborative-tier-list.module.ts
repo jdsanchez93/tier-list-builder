@@ -8,11 +8,13 @@ import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { tierListFeatureKey, tierListReducer } from './state/tier-list.reducer';
 import { TierListEffects } from './state/tier-list.effects';
+import { PositionalTierListItemComponent } from './positional-tier-list-item/positional-tier-list-item.component';
 
 
 @NgModule({
   declarations: [
-    CollaborativeTierListComponent
+    CollaborativeTierListComponent,
+    PositionalTierListItemComponent
   ],
   imports: [
     CommonModule,
