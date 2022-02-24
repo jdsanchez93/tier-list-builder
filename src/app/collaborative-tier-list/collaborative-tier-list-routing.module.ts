@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { CollaborativeTierListComponent } from './collaborative-tier-list/collaborative-tier-list.component';
 
 const routes: Routes = [
-  { path: '', component: CollaborativeTierListComponent }
+  { path: ':id', component: CollaborativeTierListComponent }
 ];
 
 @NgModule({
