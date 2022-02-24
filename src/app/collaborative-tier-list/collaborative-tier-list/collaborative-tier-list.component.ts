@@ -4,7 +4,7 @@ import { ActivatedRoute, ParamMap } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable, of, switchMap, tap } from 'rxjs';
 import { loadTierList, updateItem } from '../state/actions';
-import { TierListState } from '../state/reducers';
+import { selectTierListRows, selectTierListItems } from '../state/tier-list.selectors';
 import { PositionalTierListItem, TierListRow } from '../tier-list-models';
 
 @Component({
@@ -14,12 +14,11 @@ import { PositionalTierListItem, TierListRow } from '../tier-list-models';
 })
 export class CollaborativeTierListComponent implements OnInit {
 
-  tierListItems$: Observable<PositionalTierListItem[]> = this.store.select(state => state.tierList.items);
-  // TODO fix object keys, state.tierList.tierList is confusing
-  tierListRows$: Observable<TierListRow[]> = this.store.select(state => state.tierList.tierList.tierListRows);
+  tierListItems$: Observable<PositionalTierListItem[]> = this.store.select(selectTierListItems);
+  tierListRows$: Observable<TierListRow[]> = this.store.select(selectTierListRows);
 
   constructor(
-    private store: Store<{ tierList: TierListState }>,
+    private store: Store,
     private route: ActivatedRoute,
   ) { }
 
