@@ -3,7 +3,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { forkJoin, of } from 'rxjs';
 import { map, mergeMap, catchError, switchMap, delay, take, tap } from 'rxjs/operators';
 import { TierListService } from '../tier-list.service';
-import { loadTierList, loadTierListError, loadTierListSuccess, updateItem, updateItemError, updateItemSuccess } from './actions';
+import { loadTierList, loadTierListError, loadTierListSuccess, updateItem, updateItemError, updateItemSuccess } from './tier-list.actions';
 
 @Injectable()
 export class TierListEffects {

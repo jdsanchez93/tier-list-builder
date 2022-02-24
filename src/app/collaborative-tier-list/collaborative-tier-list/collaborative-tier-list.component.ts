@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable, of, switchMap, tap } from 'rxjs';
-import { loadTierList, updateItem } from '../state/actions';
+import { loadTierList, updateItem } from '../state/tier-list.actions';
 import { selectTierListRows, selectTierListItems } from '../state/tier-list.selectors';
 import { PositionalTierListItem, TierListRow } from '../tier-list-models';
 
