@@ -34,16 +34,4 @@ export class CollaborativeTierListComponent implements OnInit {
 
   }
 
-  //TODO move this to new component
-  drag(event: CdkDragEnd<any>, id: number) {
-    const position = event.source.getFreeDragPosition();
-
-    const partialItem: Partial<PositionalTierListItem> = {
-      positionX: Math.trunc(position.x),
-      positionY: Math.trunc(position.y)
-    };
-
-    this.store.dispatch(updateItem({ itemId: id, partialItem: partialItem }));
-  }
-
 }
