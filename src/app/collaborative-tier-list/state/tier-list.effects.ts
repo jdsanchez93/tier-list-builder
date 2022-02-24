@@ -24,10 +24,10 @@ export class TierListEffects {
   updateTierListItem$ = createEffect(() => this.actions$.pipe(
     ofType(updateItem),
     mergeMap(action => this.tierListService.patchPositionalTierListItem(action.itemId, action.partialItem).pipe(
-      map(x => updateItemSuccess({ itemId: action.itemId, partialItem: action.partialItem })),
+      map(() => updateItemSuccess({ itemId: action.itemId, partialItem: action.partialItem })),
       catchError(() => EMPTY)
     ))
-  ))
+  ));
 
   constructor(
     private actions$: Actions,
