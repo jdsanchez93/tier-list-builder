@@ -19,7 +19,7 @@ import { TierListEffects } from './state/tier-list.effects';
     DragDropModule,
     CollaborativeTierListRoutingModule,
     StoreModule.forFeature(tierListFeatureKey, tierListReducer),
-    EffectsModule.forRoot([TierListEffects])
+    EffectsModule.forFeature([TierListEffects])
   ]
 })
 export class CollaborativeTierListModule { }
