@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { forkJoin, of } from 'rxjs';
-import { map, mergeMap, catchError, switchMap, delay, take, tap } from 'rxjs/operators';
+import { forkJoin } from 'rxjs';
+import { map, mergeMap, catchError } from 'rxjs/operators';
 import { TierListService } from '../tier-list.service';
-import { loadTierList, loadTierListError, loadTierListSuccess, updateItem, updateItemError, updateItemSuccess } from './tier-list.actions';
+import { addItem, addItemError, addItemSuccess, loadTierList, loadTierListError, loadTierListSuccess, updateItem, updateItemError, updateItemSuccess } from './tier-list.actions';
 
 @Injectable()
 export class TierListEffects {
@@ -26,6 +26,14 @@ export class TierListEffects {
     mergeMap(action => this.tierListService.patchPositionalTierListItem(action.itemId, action.partialItem).pipe(
       map(() => updateItemSuccess({ itemId: action.itemId, partialItem: action.partialItem })),
       catchError(() => [updateItemError()])
+    ))
+  ));
+
+  addTierListItem$ = createEffect(() => this.actions$.pipe(
+    ofType(addItem),
+    mergeMap(action => this.tierListService.postTierListItem(action.item).pipe(
+      map(i => addItemSuccess({ item: i })),
+      catchError(() => [addItemError()])
     ))
   ));
 

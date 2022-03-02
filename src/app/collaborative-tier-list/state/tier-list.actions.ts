@@ -9,3 +9,8 @@ export const loadTierListError = createAction('[Tier List Api] Load Tier List Er
 export const updateItem = createAction('[Tier List Api] Update Item', props<{itemId: number, partialItem: Partial<PositionalTierListItem>}>());
 export const updateItemSuccess = createAction('[Tier List Api] Update Item Success', props<{itemId: number, partialItem: Partial<PositionalTierListItem>}>());
 export const updateItemError = createAction('[Tier List Api] Update Item Error');
+
+
+export const addItem = createAction('[Tier List Api] Add Item', props<{item: PositionalTierListItem}>());
+export const addItemSuccess = createAction('[Tier List Api] Add Item Success', props<{item: PositionalTierListItem}>());
+export const addItemError = createAction('[Tier List Api] Add Item Error');

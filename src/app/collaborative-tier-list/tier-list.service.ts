@@ -29,4 +29,8 @@ export class TierListService {
     )
     return this.http.patch(`api/PositionalTierListItem/${id}`, patchObj);
   }
+
+  postTierListItem(item: PositionalTierListItem): Observable<PositionalTierListItem> {
+    return this.http.post<PositionalTierListItem>(`api/PositionalTierListItem`, item);
+  }
 }
