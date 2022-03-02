@@ -13,5 +13,6 @@ export interface PositionalTierListItem {
     positionalTierListItemId: number,
     label: string,
     positionX: number,
-    positionY: number
+    positionY: number,
+    tierListId: number
 }

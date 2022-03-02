@@ -9,19 +9,29 @@ import { EffectsModule } from '@ngrx/effects';
 import { tierListFeatureKey, tierListReducer } from './state/tier-list.reducer';
 import { TierListEffects } from './state/tier-list.effects';
 import { PositionalTierListItemComponent } from './positional-tier-list-item/positional-tier-list-item.component';
+import { AddItemComponent } from './add-item/add-item.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
 
 
 @NgModule({
   declarations: [
     CollaborativeTierListComponent,
-    PositionalTierListItemComponent
+    PositionalTierListItemComponent,
+    AddItemComponent
   ],
   imports: [
     CommonModule,
     DragDropModule,
     CollaborativeTierListRoutingModule,
     StoreModule.forFeature(tierListFeatureKey, tierListReducer),
-    EffectsModule.forFeature([TierListEffects])
+    EffectsModule.forFeature([TierListEffects]),
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule
   ]
 })
 export class CollaborativeTierListModule { }

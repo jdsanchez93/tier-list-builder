@@ -32,5 +32,8 @@ export const tierListReducer = createReducer(
             return i;
         });
         return { ...state, items: updatedItems };
+    }),
+    on(TierListActions.addItemSuccess, (state, { item }) => {
+        return { ...state, items: [...state.items, item] };
     })
 );
