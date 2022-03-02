@@ -29,10 +29,10 @@ export class TierListEffects {
     ))
   ));
 
-  $addTierListItem$ = createEffect(() => this.actions$.pipe(
+  addTierListItem$ = createEffect(() => this.actions$.pipe(
     ofType(addItem),
     mergeMap(action => this.tierListService.postTierListItem(action.item).pipe(
-      map(i => addItemSuccess({item: i})),
+      map(i => addItemSuccess({ item: i })),
       catchError(() => [addItemError()])
     ))
   ));
