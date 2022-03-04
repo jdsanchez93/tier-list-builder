@@ -2,6 +2,11 @@
     [cdkDragFreeDragPosition]="{x: item.positionX, y: item.positionY}"
     (cdkDragEnded)="drag($event, item.positionalTierListItemId)">
     <div class="inner-grid-container">
+        <div style="display: flex; justify-content: flex-end;">
+            <button mat-icon-button aria-label="Delete tier list item" (click)="deleteItem(item.positionalTierListItemId)">
+                <mat-icon>delete</mat-icon>
+            </button>
+        </div>
         <div style="align-self: center;">{{item.label}}</div>
     </div>
 </div>

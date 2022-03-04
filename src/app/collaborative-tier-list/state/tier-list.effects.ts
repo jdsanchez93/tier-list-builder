@@ -3,7 +3,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { forkJoin } from 'rxjs';
 import { map, mergeMap, catchError } from 'rxjs/operators';
 import { TierListService } from '../tier-list.service';
-import { addItem, addItemError, addItemSuccess, loadTierList, loadTierListError, loadTierListSuccess, updateItem, updateItemError, updateItemSuccess } from './tier-list.actions';
+import { addItem, addItemError, addItemSuccess, deleteItem, deleteItemError, deleteItemSuccess, loadTierList, loadTierListError, loadTierListSuccess, updateItem, updateItemError, updateItemSuccess } from './tier-list.actions';
 
 @Injectable()
 export class TierListEffects {
@@ -25,6 +25,7 @@ export class TierListEffects {
     ofType(updateItem),
     mergeMap(action => this.tierListService.patchPositionalTierListItem(action.itemId, action.partialItem).pipe(
       map(() => updateItemSuccess({ itemId: action.itemId, partialItem: action.partialItem })),
+      // map(() => loadTierList({ tierListId: 2 })),
       catchError(() => [updateItemError()])
     ))
   ));
@@ -34,6 +35,14 @@ export class TierListEffects {
     mergeMap(action => this.tierListService.postTierListItem(action.item).pipe(
       map(i => addItemSuccess({ item: i })),
       catchError(() => [addItemError()])
+    ))
+  ));
+
+  deleteTierListItem$ = createEffect(() => this.actions$.pipe(
+    ofType(deleteItem),
+    mergeMap(action => this.tierListService.deleteTierListItem(action.itemId).pipe(
+      map(() => deleteItemSuccess({ itemId: action.itemId })),
+      catchError(() => [deleteItemError()])
     ))
   ));
 
