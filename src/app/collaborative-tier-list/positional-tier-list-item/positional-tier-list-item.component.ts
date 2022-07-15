@@ -1,7 +1,7 @@
 import { CdkDragEnd } from '@angular/cdk/drag-drop';
 import { Component, Input, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { updateItem } from '../state/tier-list.actions';
+import { deleteItem, updateItem } from '../state/tier-list.actions';
 import { PositionalTierListItem } from '../tier-list-models';
 
 @Component({
@@ -11,7 +11,7 @@ import { PositionalTierListItem } from '../tier-list-models';
 })
 export class PositionalTierListItemComponent implements OnInit {
   @Input() item!: PositionalTierListItem;
-  
+
   constructor(private store: Store) { }
 
   ngOnInit(): void {
@@ -26,6 +26,10 @@ export class PositionalTierListItemComponent implements OnInit {
     };
 
     this.store.dispatch(updateItem({ itemId: id, partialItem: partialItem }));
+  }
+
+  deleteItem(id: number) {
+    this.store.dispatch(deleteItem({ itemId: id }));
   }
 
 }

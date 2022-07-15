@@ -31,6 +31,10 @@ export class TierListService {
   }
 
   postTierListItem(item: PositionalTierListItem): Observable<PositionalTierListItem> {
-    return this.http.post<PositionalTierListItem>(`api/PositionalTierListItem`, item);
+    return this.http.post<PositionalTierListItem>('api/PositionalTierListItem', item);
+  }
+
+  deleteTierListItem(itemId: number) {
+    return this.http.delete<PositionalTierListItem>(`api/PositionalTierListItem/${itemId}`);
   }
 }
