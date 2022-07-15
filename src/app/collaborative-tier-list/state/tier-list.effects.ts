@@ -25,7 +25,6 @@ export class TierListEffects {
     ofType(updateItem),
     mergeMap(action => this.tierListService.patchPositionalTierListItem(action.itemId, action.partialItem).pipe(
       map(() => updateItemSuccess({ itemId: action.itemId, partialItem: action.partialItem })),
-      // map(() => loadTierList({ tierListId: 2 })),
       catchError(() => [updateItemError()])
     ))
   ));
