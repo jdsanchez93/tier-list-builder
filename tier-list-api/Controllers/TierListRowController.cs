@@ -5,7 +5,7 @@ using tier_list_api.Entities;
 namespace tier_list_api.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("api/[controller]")]
 public class TierListRowController : ControllerBase
 {
     private readonly ILogger<TierListRowController> _logger;

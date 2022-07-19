@@ -5,7 +5,7 @@ using tier_list_api.Entities;
 namespace tier_list_api.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("api/[controller]")]
 public class PositionalTierListItemController : ControllerBase
 {
     private readonly ILogger<PositionalTierListItemController> _logger;
