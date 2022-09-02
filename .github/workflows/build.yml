@@ -40,7 +40,7 @@ jobs:
     - name: Build and push docker image
       id: build-image
       shell: bash
-      run: ${PWD}/build-scripts/docker.sh $VERSION $VERSION_TAG
+      run: ./build-scripts/docker.sh $VERSION $VERSION_TAG
       env:
         VERSION: "${{ github.event_name == 'push' && steps.version.outputs.version || steps.version-pr.outputs.version }}"
         VERSION_TAG: "${{ github.event_name == 'push' && steps.version.outputs.version_tag || '' }}"
