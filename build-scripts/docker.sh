@@ -2,9 +2,9 @@
 IMAGE_TAG=$1
 
 IFS='/' read -ra SPLIT <<< "$GITHUB_REPOSITORY"
-echo ${SPLIT[0]}
+echo ${SPLIT[1]}
 
-IMAGE_PREFIX="jdeeezy/${SPLIT[0]}:"
+IMAGE_PREFIX="jdeeezy/${SPLIT[1]}:"
 IMAGE_NAME="$IMAGE_PREFIX$IMAGE_TAG"
 
 docker build . --file Dockerfile --tag $IMAGE_NAME
