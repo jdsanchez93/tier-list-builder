@@ -1,7 +1,7 @@
 {
     "containerDefinitions": [
         {
-            "name": "tier-list",
+            "name": "tier-list-builder",
             "cpu": 0,
             "memoryReservation": 300,
             "portMappings": [
@@ -18,13 +18,13 @@
             "secrets": [
                 {
                     "name": "MYSQLCONNSTR_Mysql",
-                    "valueFrom": "tier-list-env-mysql-connection-string"
+                    "valueFrom": "tier-list-builder-env-mysql-connection-string"
                 }
 
             ]
         }
     ],
-    "family": "tier-list-deploy",
+    "family": "tier-list-builder-deploy",
     "taskRoleArn": "ecsTaskExecutionRole",
     "executionRoleArn": "ecsTaskExecutionRole",
     "volumes": [],

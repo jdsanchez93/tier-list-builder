@@ -59,7 +59,7 @@ jobs:
       uses: aws-actions/amazon-ecs-render-task-definition@v1
       with:
         task-definition: ${{ github.workspace }}/.github/workflows/task-definition.json
-        container-name: tier-list
+        container-name: tier-list-builder
         image: ${{ steps.build-image.outputs.image }}
 
     - name: Deploy Amazon ECS task definition
@@ -67,7 +67,7 @@ jobs:
       uses: aws-actions/amazon-ecs-deploy-task-definition@v1
       with:
         task-definition: ${{ steps.task-def.outputs.task-definition }}
-        service: tier-list
+        service: tier-list-builder
         cluster: ProjectsCluster
         wait-for-service-stability: true
         wait-for-minutes: 10
