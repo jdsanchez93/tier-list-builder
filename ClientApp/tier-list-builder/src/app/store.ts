@@ -1,9 +1,11 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
 import counterReducer from '../features/counter/counterSlice';
+import tierListReducer from '../features/tier-list/tierListSlice'
 
 export const store = configureStore({
   reducer: {
     counter: counterReducer,
+    tierList: tierListReducer
   },
 });
 
