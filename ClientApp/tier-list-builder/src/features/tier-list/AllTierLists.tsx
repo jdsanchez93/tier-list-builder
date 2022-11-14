@@ -3,7 +3,6 @@ import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useAppDispatch } from '../../app/hooks';
 import { RootState } from '../../app/store';
-import styles from './TierList.module.css';
 import { getAllTierListsAsync, selectAllTierLists } from './tierListSlice';
 
 export function AllTierLists() {
