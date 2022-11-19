@@ -18,6 +18,21 @@ public class TierListController : ControllerBase
         _context = context;
     }
 
+    [HttpGet("GetAll")]
+    public IActionResult GetAll()
+    {
+        try
+        {
+            var t = _context.TierLists.ToList();
+            return Ok(t);
+        }
+        catch (System.Exception e)
+        {
+            _logger.LogError("Get", e);
+            return StatusCode(StatusCodes.Status500InternalServerError);
+        }
+    }
+
     [HttpGet("{id}")]
     public IActionResult GetById([FromRoute] int id)
     {
