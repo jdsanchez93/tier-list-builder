@@ -9,7 +9,7 @@ WORKDIR /src
 COPY ./tier-list-api/tier-list-api.csproj .
 RUN dotnet restore
 COPY ./tier-list-api .
-COPY --from=clientbuild /usr/local/app/dist/tier-list-builder ./wwwroot
+COPY --from=clientbuild /usr/local/app/build ./wwwroot
 RUN dotnet publish -c release -o /app
 
 FROM mcr.microsoft.com/dotnet/aspnet:6.0
