@@ -1,6 +1,6 @@
 FROM node:16.13.0 as clientbuild
 WORKDIR /usr/local/app
-COPY ./ClientApp /usr/local/app/
+COPY ./ClientApp/tier-list-builder /usr/local/app/
 RUN npm install
 RUN npm run build
 
