@@ -6,7 +6,6 @@ import Drawer from '@mui/material/Drawer';
 import IconButton from '@mui/material/IconButton';
 import ViewListIcon from '@mui/icons-material/ViewList';
 import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
@@ -14,6 +13,8 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import { Link, Outlet } from 'react-router-dom';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
+
 const drawerWidth = 240;
 
 export default function ResponsiveDrawer() {
@@ -25,7 +26,8 @@ export default function ResponsiveDrawer() {
   };
 
   const menuItems = [
-    { name: 'All Tier Lists', icon: <ViewListIcon />, link: '/all' }
+    { name: 'All Tier Lists', icon: <ViewListIcon />, link: '/all' },
+    { name: 'Create Tier List', icon: <AddCircleIcon />, link: '/tier-list/create' }
   ];
 
   const drawer = (

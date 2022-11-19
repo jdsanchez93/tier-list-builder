@@ -5,6 +5,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import ResponsiveDrawer from './app/ResponsiveDrawer';
 import { Route, Routes } from 'react-router-dom';
 import { AllTierLists } from './features/tier-list/AllTierLists';
+import { CreateTierList } from './features/tier-list/CreateTierList';
 
 const darkTheme = createTheme({
   palette: {
@@ -20,6 +21,7 @@ function App() {
         <Routes>
           <Route path="/" element={<ResponsiveDrawer />}>
             <Route path="/all" element={<AllTierLists />}></Route>
+            <Route path="/tier-list/create" element={<CreateTierList />}></Route>
           </Route>
         </Routes>
       </ThemeProvider>
