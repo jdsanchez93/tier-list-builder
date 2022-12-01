@@ -49,5 +49,8 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://localhost:5230"
+  "proxy": "http://localhost:5230",
+  "devDependencies": {
+    "@types/react-beautiful-dnd": "^13.1.2"
+  }
 }
