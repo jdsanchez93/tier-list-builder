@@ -6,7 +6,7 @@ import ResponsiveDrawer from './app/ResponsiveDrawer';
 import { Route, Routes } from 'react-router-dom';
 import { AllTierLists } from './features/tier-list/AllTierLists';
 import { CreateTierList } from './features/tier-list/CreateTierList';
-import { EditTierListPage } from './features/tier-list/EditTierListPage';
+import { EditTierListPage } from './features/configure-tier-list/EditTierListPage';
 
 const darkTheme = createTheme({
   palette: {
