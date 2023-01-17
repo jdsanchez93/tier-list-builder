@@ -18,7 +18,13 @@ export function CreateTierList() {
 
     return (
         <div>
-            <TextField id="outlined-basic" label="Name" variant="outlined" value={name} onChange={e => updateName(e.target.value)} />
+            <TextField
+                id="outlined-basic"
+                label="Name"
+                variant="outlined"
+                value={name}
+                onChange={e => updateName(e.target.value)}
+            />
             <Button variant="contained" onClick={onSubmit}>Create</Button>
         </div>
     );

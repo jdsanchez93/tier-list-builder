@@ -32,7 +32,12 @@ export const apiSlice = createApi({
     })
 });
 
-export const { useGetTierListsQuery, usePostTierListMutation, useGetTierListByIdQuery, useEditTierListMutation } = apiSlice;
+export const {
+    useGetTierListsQuery,
+    usePostTierListMutation,
+    useGetTierListByIdQuery,
+    useEditTierListMutation
+} = apiSlice;
 
 interface PatchItem {
     path: string;
