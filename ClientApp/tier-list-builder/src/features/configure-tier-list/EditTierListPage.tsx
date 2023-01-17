@@ -1,28 +1,35 @@
 import { Box, CircularProgress, Typography } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useGetTierListByIdQuery } from '../api/apiSlice';
 import { DraggableTierListRows } from './DraggableTierListRows';
 import { AddRowForm } from './AddRowForm';
 import { ConfigureTierListForm } from './ConfigureTierListForm';
 import { SaveTierList } from './SaveTierList';
+import { TierList, TierListRow } from '../tier-list/tierListSlice';
 
 export function EditTierListPage() {
 
     const { tierListId } = useParams();
     const { data: tierList, isSuccess, isLoading } = useGetTierListByIdQuery(tierListId);
 
-    const [tierListName, setTierListName] = useState(tierList === undefined ? '' : tierList.name);
+    const [tierListState, setTierListState] = useState<TierList>(tierList || { tierListId: 0, name: '', tierListRows: [] });
 
     const handleNameChange: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement> =
-        (e: React.ChangeEvent<HTMLInputElement>) => setTierListName(e.target.value);
+        (e: React.ChangeEvent<HTMLInputElement>) => setTierListState(({ ...tierListState, name: e.target.value }));
+
+    const handleRowsChange =
+        (r: TierListRow[]) => setTierListState(({ ...tierListState, tierListRows: r }));
 
     useEffect(() => {
         if (tierList !== undefined) {
-            setTierListName(tierList.name);
+            setTierListState(tierList);
         }
     }, [tierList])
 
+    const tierListForm = useMemo(() => <ConfigureTierListForm onChange={handleNameChange} tierListName={tierListState.name} />, [tierListState.name]);
+    const draggableRows = useMemo(() => <DraggableTierListRows onChange={handleRowsChange} rows={tierListState.tierListRows || []} />, [tierListState.tierListRows]);
+    const addRowForm = useMemo(() => <AddRowForm onChange={handleRowsChange} tierListId={tierListState.tierListId} rows={tierListState.tierListRows || []} />, [tierListState.tierListRows]);
 
     let content;
 
@@ -33,10 +40,10 @@ export function EditTierListPage() {
 
         content = (
             <Box>
-                <ConfigureTierListForm onChange={handleNameChange} tierListName={tierListName} />
-                <DraggableTierListRows tierList={tierList} />
-                <AddRowForm tierListId={tierList.tierListId} />
-                <SaveTierList tierList={tierList} />
+                {tierListForm}
+                {draggableRows}
+                {addRowForm}
+                <SaveTierList tierList={tierListState} />
             </Box>
         );
     }

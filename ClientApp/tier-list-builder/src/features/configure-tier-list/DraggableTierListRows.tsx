@@ -28,7 +28,7 @@ function reorder<TItem>(
     const [removed] = result.splice(startIndex, 1);
     result.splice(endIndex, 0, removed);
 
-    return result;
+    return result.map((x, index) => ({ ...x, index: index }));
 }
 
 const grid = 8;
@@ -57,13 +57,10 @@ const getListStyle = (isDraggingOver: boolean) => ({
 
 
 interface DraggableTierListProps {
-    tierList: TierList;
+    rows: TierListRow[];
+    onChange: (r: TierListRow[]) => void;
 }
 export function DraggableTierListRows(props: DraggableTierListProps) {
-
-    const tierListRows: TierListRow[] = props.tierList.tierListRows === undefined ? [] : props.tierList.tierListRows
-
-    const [state, setState] = useState(tierListRows);
 
     const onDragEnd = (result: DropResult) => {
         // dropped outside the list
@@ -72,12 +69,12 @@ export function DraggableTierListRows(props: DraggableTierListProps) {
         }
 
         const items = reorder(
-            state,
+            props.rows,
             result.source.index,
             result.destination.index,
         );
 
-        setState(items);
+        props.onChange(items);
     }
 
     return (
@@ -93,10 +90,11 @@ export function DraggableTierListRows(props: DraggableTierListProps) {
                         style={getListStyle(snapshot.isDraggingOver)}
                         {...provided.droppableProps}
                     >
-                        {state.map((item, index) => (
+                        {props.rows.map((item, index) => (
+                            // can't use tierListRowId  as key because multiple ids can be zero when staging rows
                             <Draggable
-                                key={item.tierListRowId}
-                                draggableId={String(item.tierListRowId)}
+                                key={item.tierListRowId + item.name}
+                                draggableId={String(item.tierListRowId) + item.name}
                                 index={index}
                             >
                                 {(
