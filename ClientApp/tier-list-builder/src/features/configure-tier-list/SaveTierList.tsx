@@ -1,5 +1,6 @@
-import { Box, TextField, Button } from '@mui/material';
+import { Box, Button } from '@mui/material';
 import React from 'react';
+import { useEditTierListMutation } from '../api/apiSlice';
 import { TierList } from '../tier-list/tierListSlice';
 
 interface SaveTierListProps {
@@ -7,6 +8,7 @@ interface SaveTierListProps {
 }
 
 export const SaveTierList = (props: SaveTierListProps) => {
+    const [patchTierList] = useEditTierListMutation();
 
     const onCancel = () => {
         // TODO
@@ -15,10 +17,15 @@ export const SaveTierList = (props: SaveTierListProps) => {
 
     const onSubmit = async () => {
         try {
-
-            console.log(props.tierList)
+            if (props.tierList.tierListId === 0) {
+                // TODO post new tier list
+                console.log('create new tier list...')
+                return;
+            }
+            let partialTierList: Partial<TierList> = props.tierList;
+            patchTierList(partialTierList);
         } catch (error) {
-            console.log(error)
+            console.log(error);
         }
     }
 

@@ -1,12 +1,12 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { TierList, TierListRow } from '../tier-list/tierListSlice';
+import { TierList } from '../tier-list/tierListSlice';
 
 export const apiSlice = createApi({
     reducerPath: 'api',
     baseQuery: fetchBaseQuery({ baseUrl: '/api' }),
     tagTypes: ['AllTierLists'],
     endpoints: builder => ({
-        getTierLists: builder.query<TierList[], any>({
+        getTierLists: builder.query<TierList[], void>({
             query: () => 'TierList/GetAll',
             providesTags: ['AllTierLists']
         }),
@@ -23,11 +23,16 @@ export const apiSlice = createApi({
             query: (x) => `TierList/${x}`
         }),
         editTierList: builder.mutation<TierList, Partial<TierList>>({
-            query: (x: Partial<TierList>) => ({
-                url: `/TierList/${x.tierListId}`,
-                method: 'PATCH',
-                body: getPatchItems(x)
-            })
+            query: (x: Partial<TierList>) => {
+                const tierListId = x.tierListId;
+                const copy = { ...x };
+                delete copy.tierListId
+                return ({
+                    url: `/TierList/${tierListId}`,
+                    method: 'PATCH',
+                    body: getPatchItems(copy)
+                });
+            }
         }),
     })
 });
