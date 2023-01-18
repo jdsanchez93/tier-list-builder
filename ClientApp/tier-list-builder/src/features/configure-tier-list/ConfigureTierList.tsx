@@ -8,7 +8,7 @@ import { ConfigureTierListForm } from './ConfigureTierListForm';
 import { SaveTierList } from './SaveTierList';
 import { TierList, TierListRow } from '../tier-list/TierList.models';
 
-export function EditTierListPage() {
+export function ConfigureTierList() {
 
     const { tierListId } = useParams();
     const { data: tierList, isSuccess, isLoading } = useGetTierListByIdQuery(tierListId);
