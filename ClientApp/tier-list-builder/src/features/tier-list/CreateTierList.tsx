@@ -1,31 +1,22 @@
-import { Button, TextField } from "@mui/material";
-import React, { useState } from "react";
-import { usePostTierListMutation } from "../api/apiSlice";
+import React from "react";
+import { Box, Typography } from "@mui/material";
+import { ConfigureTierList } from "../configure-tier-list/ConfigureTierList";
+import { TierList } from "./TierList.models";
 
 export function CreateTierList() {
 
-    const [name, updateName] = useState('');
-    const [addNewTierList] = usePostTierListMutation();
-
-    const onSubmit = async () => {
-        try {
-            await addNewTierList({ name: name }).unwrap();
-            updateName('');
-        } catch (err) {
-            console.error('Failed to post Tier List: ', err);
-        }
-    };
+    let newTierList: TierList = {
+        tierListId: 0,
+        name: '',
+        tierListRows: []
+    }
 
     return (
-        <div>
-            <TextField
-                id="outlined-basic"
-                label="Name"
-                variant="outlined"
-                value={name}
-                onChange={e => updateName(e.target.value)}
-            />
-            <Button variant="contained" onClick={onSubmit}>Create</Button>
-        </div>
-    );
+        <Box>
+            <Typography variant="h6">
+                Create Tier List
+            </Typography>
+            <ConfigureTierList tierList={newTierList} />
+        </Box>
+    )
 }

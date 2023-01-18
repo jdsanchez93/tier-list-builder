@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import { Box, Typography } from '@mui/material';
+import { Box } from '@mui/material';
 import { DraggableTierListRows } from './DraggableTierListRows';
 import { AddRowForm } from './AddRowForm';
 import { ConfigureTierListForm } from './ConfigureTierListForm';
@@ -56,7 +56,8 @@ export function ConfigureTierList(props: ConfigureTierListProps) {
             {configName}
             {draggableRows}
             {addRowForm}
+            {/* TODO perhaps pass a callback so this doesn't unnecessarily re-render */}
             <SaveTierList tierList={tierListState} />
         </Box>
-    )
+    );
 }
