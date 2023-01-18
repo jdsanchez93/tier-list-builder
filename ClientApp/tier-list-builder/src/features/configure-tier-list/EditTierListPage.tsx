@@ -16,10 +16,10 @@ export function EditTierListPage() {
     const [tierListState, setTierListState] = useState<TierList>(tierList || { tierListId: 0, name: '', tierListRows: [] });
 
     const handleNameChange: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement> =
-        (e: React.ChangeEvent<HTMLInputElement>) => setTierListState(({ ...tierListState, name: e.target.value }));
+        (e: React.ChangeEvent<HTMLInputElement>) => setTierListState(t => ({ ...t, name: e.target.value }))
 
     const handleRowsChange =
-        (r: TierListRow[]) => setTierListState(({ ...tierListState, tierListRows: r }));
+        (r: TierListRow[]) => setTierListState(t => ({ ...t, tierListRows: r }));
 
     useEffect(() => {
         if (tierList !== undefined) {
@@ -29,7 +29,7 @@ export function EditTierListPage() {
 
     const tierListForm = useMemo(() => <ConfigureTierListForm onChange={handleNameChange} tierListName={tierListState.name} />, [tierListState.name]);
     const draggableRows = useMemo(() => <DraggableTierListRows onChange={handleRowsChange} rows={tierListState.tierListRows || []} />, [tierListState.tierListRows]);
-    const addRowForm = useMemo(() => <AddRowForm onChange={handleRowsChange} tierListId={tierListState.tierListId} rows={tierListState.tierListRows || []} />, [tierListState.tierListRows]);
+    const addRowForm = useMemo(() => <AddRowForm onChange={handleRowsChange} tierListId={tierListState.tierListId} rows={tierListState.tierListRows || []} />, [tierListState.tierListRows, tierListState.tierListId]);
 
     let content;
 
