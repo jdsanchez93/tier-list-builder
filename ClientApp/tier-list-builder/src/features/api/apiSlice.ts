@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { TierList } from '../tier-list/tierListSlice';
+import { TierList } from '../tier-list/TierList.models';
 
 export const apiSlice = createApi({
     reducerPath: 'api',

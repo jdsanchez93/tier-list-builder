@@ -1,6 +1,6 @@
 import { Box, Button, TextField } from '@mui/material';
 import React, { useState } from 'react';
-import { TierListRow } from '../tier-list/tierListSlice';
+import { TierListRow } from '../tier-list/TierList.models';
 
 interface AddRowFormProps {
     tierListId: number;

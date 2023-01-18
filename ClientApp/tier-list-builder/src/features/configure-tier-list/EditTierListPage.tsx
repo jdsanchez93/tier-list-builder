@@ -6,7 +6,7 @@ import { DraggableTierListRows } from './DraggableTierListRows';
 import { AddRowForm } from './AddRowForm';
 import { ConfigureTierListForm } from './ConfigureTierListForm';
 import { SaveTierList } from './SaveTierList';
-import { TierList, TierListRow } from '../tier-list/tierListSlice';
+import { TierList, TierListRow } from '../tier-list/TierList.models';
 
 export function EditTierListPage() {
 

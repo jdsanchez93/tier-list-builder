@@ -1,7 +1,7 @@
 import { Box, Button } from '@mui/material';
 import React from 'react';
 import { useEditTierListMutation } from '../api/apiSlice';
-import { TierList } from '../tier-list/tierListSlice';
+import { TierList } from '../tier-list/TierList.models';
 
 interface SaveTierListProps {
     tierList: TierList;

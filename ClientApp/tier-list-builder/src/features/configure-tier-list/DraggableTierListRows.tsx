@@ -15,7 +15,7 @@ import type {
     DroppableProvided,
     DroppableStateSnapshot,
 } from '@hello-pangea/dnd';
-import { TierListRow } from '../tier-list/tierListSlice';
+import { TierListRow } from '../tier-list/TierList.models';
 
 
 // a little function to help us with reordering the result
