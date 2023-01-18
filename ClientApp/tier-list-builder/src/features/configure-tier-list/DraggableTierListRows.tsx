@@ -15,7 +15,7 @@ import type {
     DroppableProvided,
     DroppableStateSnapshot,
 } from '@hello-pangea/dnd';
-import { TierList, TierListRow } from '../tier-list/tierListSlice';
+import { TierListRow } from '../tier-list/tierListSlice';
 
 
 // a little function to help us with reordering the result
@@ -62,6 +62,8 @@ interface DraggableTierListProps {
 }
 export function DraggableTierListRows(props: DraggableTierListProps) {
 
+    const sortedRows = ([...(props.rows)]).sort((a, b) => a.index - b.index)
+
     const onDragEnd = (result: DropResult) => {
         // dropped outside the list
         if (!result.destination) {
@@ -69,7 +71,7 @@ export function DraggableTierListRows(props: DraggableTierListProps) {
         }
 
         const items = reorder(
-            props.rows,
+            sortedRows,
             result.source.index,
             result.destination.index,
         );
@@ -90,8 +92,8 @@ export function DraggableTierListRows(props: DraggableTierListProps) {
                         style={getListStyle(snapshot.isDraggingOver)}
                         {...provided.droppableProps}
                     >
-                        {props.rows.map((item, index) => (
-                            // can't use tierListRowId  as key because multiple ids can be zero when staging rows
+                        {sortedRows.map((item, index) => (
+                            // can't use tierListRowId as key because multiple ids can be zero when staging rows
                             <Draggable
                                 key={item.tierListRowId + item.name}
                                 draggableId={String(item.tierListRowId) + item.name}
