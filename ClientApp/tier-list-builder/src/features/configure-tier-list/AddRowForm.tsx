@@ -40,6 +40,7 @@ export function AddRowForm(props: AddRowFormProps) {
         };
 
         const newRows = [...props.rows, newRow];
+        setName('');
         props.onChange(newRows);
     }
 
