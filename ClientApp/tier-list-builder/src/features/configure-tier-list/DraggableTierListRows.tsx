@@ -16,6 +16,8 @@ import type {
     DroppableStateSnapshot,
 } from '@hello-pangea/dnd';
 import { TierListRow } from '../tier-list/TierList.models';
+import { Box, IconButton, Paper, Typography } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 
 // a little function to help us with reordering the result
@@ -39,18 +41,22 @@ const getItemStyle = (
 ) => ({
     // some basic styles to make the items look a bit nicer
     userSelect: 'none' as const,
-    padding: grid * 2,
-    margin: `0 ${grid}px 0 0`,
+    // padding: grid * 2,
+    // margin: `0 ${grid}px 0 0`,
 
     // change background colour if dragging
-    background: isDragging ? 'lightgreen' : 'grey',
+    // background: isDragging ? 'lightgreen' : 'grey',
+
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
 
     // styles we need to apply on draggables
     ...draggableStyle,
 });
 
 const getListStyle = (isDraggingOver: boolean) => ({
-    background: isDraggingOver ? 'lightblue' : 'lightgrey',
+    // background: isDraggingOver ? 'lightblue' : 'lightgrey',
     padding: grid,
     overflow: 'auto',
 });
@@ -65,63 +71,91 @@ export function DraggableTierListRows(props: DraggableTierListProps) {
     const sortedRows = ([...(props.rows)]).sort((a, b) => a.index - b.index)
 
     const onDragEnd = (result: DropResult) => {
+        const { destination, source } = result;
         // dropped outside the list
-        if (!result.destination) {
+        if (!destination) {
             return;
         }
 
+        if (source.index === destination.index)
+            return;
+
         const items = reorder(
             sortedRows,
-            result.source.index,
-            result.destination.index,
+            source.index,
+            destination.index,
         );
 
         props.onChange(items);
     }
 
     return (
-        <DragDropContext
-            onDragEnd={onDragEnd}
-        >
-            <Droppable
-                droppableId="droppable"
+        <Box sx={{ display: 'flex', flexDirection: 'column', width: 'fit-content', margin: '10px' }}>
+
+            <Typography variant='subtitle1'>Rows - drag to change order</Typography>
+
+            <DragDropContext
+                onDragEnd={onDragEnd}
             >
-                {(provided: DroppableProvided, snapshot: DroppableStateSnapshot) => (
-                    <div
-                        ref={provided.innerRef}
-                        style={getListStyle(snapshot.isDraggingOver)}
-                        {...provided.droppableProps}
-                    >
-                        {sortedRows.map((item, index) => (
-                            // can't use tierListRowId as key because multiple ids can be zero when staging rows
-                            <Draggable
-                                key={item.tierListRowId + item.name}
-                                draggableId={String(item.tierListRowId) + item.name}
-                                index={index}
-                            >
-                                {(
-                                    draggableProvided: DraggableProvided,
-                                    draggableSnapshot: DraggableStateSnapshot,
-                                ) => (
-                                    <div
-                                        ref={draggableProvided.innerRef}
-                                        {...draggableProvided.draggableProps}
-                                        {...draggableProvided.dragHandleProps}
-                                        style={getItemStyle(
-                                            draggableSnapshot.isDragging,
-                                            draggableProvided.draggableProps.style,
-                                        )}
-                                    >
-                                        {item.name}
-                                    </div>
-                                )}
-                            </Draggable>
-                        ))}
-                        {provided.placeholder}
-                    </div>
-                )}
-            </Droppable>
-        </DragDropContext>
+                <Droppable
+                    droppableId="droppable"
+                >
+                    {(provided: DroppableProvided, snapshot: DroppableStateSnapshot) => (
+                        <div
+                            ref={provided.innerRef}
+                            style={getListStyle(snapshot.isDraggingOver)}
+                            {...provided.droppableProps}
+                        >
+                            {sortedRows.map((item, index) => (
+                                // can't use tierListRowId as key because multiple ids can be zero when staging rows
+                                <Draggable
+                                    key={item.tierListRowId + item.name}
+                                    draggableId={String(item.tierListRowId) + item.name}
+                                    index={index}
+                                >
+                                    {(
+                                        draggableProvided: DraggableProvided,
+                                        draggableSnapshot: DraggableStateSnapshot,
+                                    ) => (
+                                        <Box
+                                            sx={{ display: 'flex' }}
+                                            ref={draggableProvided.innerRef}
+                                            {...draggableProvided.draggableProps}
+                                            style={getItemStyle(
+                                                draggableSnapshot.isDragging,
+                                                draggableProvided.draggableProps.style,
+                                            )}
+                                        >
+                                            <Paper
+                                                // variant="outlined"
+                                                square
+                                                elevation={3}
+                                                sx={{
+                                                    width: '100px',
+                                                    height: '100px',
+                                                    display: 'flex',
+                                                    alignItems: 'center',
+                                                    justifyContent: 'center',
+                                                    margin: '2px'
+                                                }}
+                                                {...draggableProvided.dragHandleProps}
+                                            >
+                                                {item.name}
+                                            </Paper>
+                                            {/* TODO delete row */}
+                                            <IconButton aria-label="delete" onClick={(e) => ({})}>
+                                                <DeleteIcon />
+                                            </IconButton>
+                                        </Box>
+                                    )}
+                                </Draggable>
+                            ))}
+                            {provided.placeholder}
+                        </div>
+                    )}
+                </Droppable>
+            </DragDropContext>
+        </Box>
     );
 
 }

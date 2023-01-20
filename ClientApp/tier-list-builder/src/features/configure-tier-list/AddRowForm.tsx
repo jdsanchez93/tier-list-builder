@@ -1,6 +1,7 @@
 import { Box, Button, TextField } from '@mui/material';
 import React, { useState } from 'react';
 import { TierListRow } from '../tier-list/TierList.models';
+import AddIcon from '@mui/icons-material/Add';
 
 interface AddRowFormProps {
     tierListId: number;
@@ -13,6 +14,12 @@ export function AddRowForm(props: AddRowFormProps) {
     const [name, setName] = useState('');
 
     const onSubmit = () => {
+
+        if (name === '') {
+            // TODO consider displaying error to user
+            console.error('Cannot have blank name');
+            return;
+        }
 
         const duplicateRow = props.rows.find(r => r.name === name);
         if (duplicateRow !== undefined) {
@@ -37,7 +44,7 @@ export function AddRowForm(props: AddRowFormProps) {
     }
 
     return (
-        <Box>
+        <Box sx={{ margin: '10px', display: 'flex', alignItems: 'center', justifyContent: 'left', gap: '10px' }}>
             <TextField
                 id="row-name-input"
                 label="Row Name"
@@ -46,7 +53,14 @@ export function AddRowForm(props: AddRowFormProps) {
                 onChange={e => setName(e.target.value)}
                 autoComplete="off"
             />
-            <Button id="add-row-button" variant="text" onClick={onSubmit}>Add Row</Button>
+
+            <Button
+                id="add-row-button"
+                variant="outlined"
+                onClick={onSubmit}
+                startIcon={<AddIcon />}>
+                Add Row
+            </Button>
         </Box>
     );
 

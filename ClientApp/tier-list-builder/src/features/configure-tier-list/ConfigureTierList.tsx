@@ -52,7 +52,9 @@ export function ConfigureTierList(props: ConfigureTierListProps) {
     );
 
     return (
-        <Box>
+        <Box
+            sx={{ margin: '10px' }}
+        >
             {configName}
             {draggableRows}
             {addRowForm}

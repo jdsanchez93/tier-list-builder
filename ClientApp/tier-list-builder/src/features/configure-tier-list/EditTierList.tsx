@@ -26,8 +26,6 @@ export default function EditTierList() {
                 Edit Tier List
             </Typography>
 
-            <br />
-
             {content}
 
         </div>
