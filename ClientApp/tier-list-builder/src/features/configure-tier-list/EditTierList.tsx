@@ -22,7 +22,7 @@ export default function EditTierList() {
 
     return (
         <div>
-            <Typography variant="h6">
+            <Typography variant="h5">
                 Edit Tier List
             </Typography>
 

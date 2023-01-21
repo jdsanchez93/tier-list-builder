@@ -40,24 +40,12 @@ export function ConfigureTierList(props: ConfigureTierListProps) {
         [tierListState.tierListRows]
     );
 
-    const addRowForm = useMemo(
-        () => (
-            <AddRowForm
-                onChange={handleRowsChange}
-                tierListId={tierListState.tierListId}
-                rows={tierListState.tierListRows || []}
-            />
-        ),
-        [tierListState.tierListRows, tierListState.tierListId]
-    );
-
     return (
         <Box
             sx={{ margin: '10px' }}
         >
             {configName}
             {draggableRows}
-            {addRowForm}
             {/* TODO perhaps pass a callback so this doesn't unnecessarily re-render */}
             <SaveTierList tierList={tierListState} />
         </Box>
