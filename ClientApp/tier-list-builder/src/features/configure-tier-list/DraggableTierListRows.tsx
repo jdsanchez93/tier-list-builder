@@ -82,6 +82,10 @@ export function DraggableTierListRows(props: DraggableTierListProps) {
 
     const sortedRows = ([...(props.rows)]).sort((a, b) => a.index - b.index)
 
+    const deleteRow = (index: number) => {
+        props.onChange(sortedRows.filter((_, i) => i !== index));
+    }
+
     const onDragEnd = (result: DropResult) => {
         const { destination, source } = result;
         // dropped outside the list
@@ -158,8 +162,7 @@ export function DraggableTierListRows(props: DraggableTierListProps) {
                                                 >
                                                     {item.name}
                                                 </Paper>
-                                                {/* TODO delete row */}
-                                                <IconButton aria-label="delete" onClick={(e) => ({})}>
+                                                <IconButton aria-label="delete" onClick={() => deleteRow(index)}>
                                                     <DeleteIcon />
                                                 </IconButton>
                                             </Box>
@@ -182,7 +185,7 @@ export function DraggableTierListRows(props: DraggableTierListProps) {
                     Add Row
                 </Button>
             </CardActions>
-            <ConfigureRowDialog open={dialogOpen} onClose={handleDialogClosed} onChange={props.onChange} rows={props.rows} tierListId={props.tierListId}/>
+            <ConfigureRowDialog open={dialogOpen} onClose={handleDialogClosed} onChange={props.onChange} rows={props.rows} tierListId={props.tierListId} />
         </Card>
     );
 

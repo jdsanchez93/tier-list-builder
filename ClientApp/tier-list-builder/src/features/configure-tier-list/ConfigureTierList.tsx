@@ -1,7 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import { Box } from '@mui/material';
 import { DraggableTierListRows } from './DraggableTierListRows';
-import { AddRowForm } from './AddRowForm';
 import { ConfigureTierListForm } from './ConfigureTierListForm';
 import { SaveTierList } from './SaveTierList';
 import { TierList, TierListRow } from '../tier-list/TierList.models';
@@ -38,7 +37,7 @@ export function ConfigureTierList(props: ConfigureTierListProps) {
                 tierListId={tierListState.tierListId}
             />
         ),
-        [tierListState.tierListRows]
+        [tierListState.tierListRows, tierListState.tierListId]
     );
 
     return (

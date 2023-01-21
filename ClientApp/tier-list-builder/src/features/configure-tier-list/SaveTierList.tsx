@@ -1,4 +1,4 @@
-import { Box, Button, Fab } from '@mui/material';
+import { Box, Fab } from '@mui/material';
 import React from 'react';
 import { useEditTierListMutation, usePostTierListMutation } from '../api/apiSlice';
 import { TierList } from '../tier-list/TierList.models';
