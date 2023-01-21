@@ -35,6 +35,7 @@ export function ConfigureTierList(props: ConfigureTierListProps) {
             <DraggableTierListRows
                 onChange={handleRowsChange}
                 rows={tierListState.tierListRows || []}
+                tierListId={tierListState.tierListId}
             />
         ),
         [tierListState.tierListRows]

@@ -65,6 +65,7 @@ const getListStyle = (isDraggingOver: boolean) => ({
 interface DraggableTierListProps {
     rows: TierListRow[];
     onChange: (r: TierListRow[]) => void;
+    tierListId: number;
 }
 export function DraggableTierListRows(props: DraggableTierListProps) {
 
@@ -77,7 +78,6 @@ export function DraggableTierListRows(props: DraggableTierListProps) {
 
     const handleDialogClosed = () => {
         setDialogOpen(false);
-        // TODO
     }
 
     const sortedRows = ([...(props.rows)]).sort((a, b) => a.index - b.index)
@@ -182,7 +182,7 @@ export function DraggableTierListRows(props: DraggableTierListProps) {
                     Add Row
                 </Button>
             </CardActions>
-            <ConfigureRowDialog open={dialogOpen} onClose={handleDialogClosed} />
+            <ConfigureRowDialog open={dialogOpen} onClose={handleDialogClosed} onChange={props.onChange} rows={props.rows} tierListId={props.tierListId}/>
         </Card>
     );
 
