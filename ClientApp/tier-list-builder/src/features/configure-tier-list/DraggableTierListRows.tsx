@@ -47,10 +47,6 @@ const getItemStyle = (
     // change background colour if dragging
     // background: isDragging ? 'lightgreen' : 'grey',
 
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-
     // styles we need to apply on draggables
     ...draggableStyle,
 });
@@ -69,7 +65,6 @@ interface DraggableTierListProps {
 }
 export function DraggableTierListRows(props: DraggableTierListProps) {
 
-    // TODO move this to separate component
     const [dialogOpen, setDialogOpen] = useState(false);
 
     const addRowClicked = () => {
@@ -147,7 +142,6 @@ export function DraggableTierListRows(props: DraggableTierListProps) {
                                                 )}
                                             >
                                                 <Paper
-                                                    // variant="outlined"
                                                     square
                                                     elevation={3}
                                                     sx={{
