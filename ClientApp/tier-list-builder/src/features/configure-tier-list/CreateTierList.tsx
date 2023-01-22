@@ -1,7 +1,7 @@
 import React from "react";
 import { Box, Typography } from "@mui/material";
 import { ConfigureTierList } from "../configure-tier-list/ConfigureTierList";
-import { TierList } from "./TierList.models";
+import { TierList } from "../tier-list/TierList.models";
 
 export function CreateTierList() {
 
