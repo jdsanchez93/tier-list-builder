@@ -46,13 +46,13 @@ export function ConfigureTierList(props: ConfigureTierListProps) {
 
     const onSave = async () => {
         try {
-            if (props.tierList.name === '') {
+            if (tierListState.name === '') {
                 console.error('Name cannot be blank');
                 return;
             }
 
-            let partialTierList: Partial<TierList> = props.tierList;
-            if (props.tierList.tierListId === 0) {
+            let partialTierList: Partial<TierList> = tierListState;
+            if (tierListState.tierListId === 0) {
                 createTierList(partialTierList);
                 return;
             }
