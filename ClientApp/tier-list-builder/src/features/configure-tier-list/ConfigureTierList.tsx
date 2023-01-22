@@ -4,6 +4,7 @@ import { DraggableTierListRows } from './DraggableTierListRows';
 import { ConfigureTierListForm } from './ConfigureTierListForm';
 import { SaveTierList } from './SaveTierList';
 import { TierList, TierListRow } from '../tier-list/TierList.models';
+import { useEditTierListMutation, usePostTierListMutation } from '../api/apiSlice';
 
 interface ConfigureTierListProps {
     tierList: TierList;
@@ -40,14 +41,34 @@ export function ConfigureTierList(props: ConfigureTierListProps) {
         [tierListState.tierListRows, tierListState.tierListId]
     );
 
+    const [patchTierList] = useEditTierListMutation();
+    const [createTierList] = usePostTierListMutation();
+
+    const onSave = async () => {
+        try {
+            if (props.tierList.name === '') {
+                console.error('Name cannot be blank');
+                return;
+            }
+
+            let partialTierList: Partial<TierList> = props.tierList;
+            if (props.tierList.tierListId === 0) {
+                createTierList(partialTierList);
+                return;
+            }
+            patchTierList(partialTierList);
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
     return (
         <Box
             sx={{ margin: '10px' }}
         >
             {configName}
             {draggableRows}
-            {/* TODO perhaps pass a callback so this doesn't unnecessarily re-render */}
-            <SaveTierList tierList={tierListState} />
+            <SaveTierList onSave={onSave} />
         </Box>
     );
 }

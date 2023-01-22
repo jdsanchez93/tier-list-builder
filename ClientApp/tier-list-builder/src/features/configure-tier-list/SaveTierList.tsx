@@ -1,35 +1,12 @@
-import { Box, Fab } from '@mui/material';
 import React from 'react';
-import { useEditTierListMutation, usePostTierListMutation } from '../api/apiSlice';
-import { TierList } from '../tier-list/TierList.models';
+import { Box, Fab } from '@mui/material';
 import SaveIcon from '@mui/icons-material/Save';
 
 interface SaveTierListProps {
-    tierList: TierList;
+    onSave: () => void;
 }
 
 export const SaveTierList = (props: SaveTierListProps) => {
-    const [patchTierList] = useEditTierListMutation();
-    const [createTierList] = usePostTierListMutation();
-
-    const onSubmit = async () => {
-        try {
-            if (props.tierList.name === '') {
-                console.error('Name cannot be blank');
-                return;
-            }
-
-            let partialTierList: Partial<TierList> = props.tierList;
-            if (props.tierList.tierListId === 0) {
-                createTierList(partialTierList);
-                return;
-            }
-            patchTierList(partialTierList);
-        } catch (error) {
-            console.error(error);
-        }
-    }
-
     return (
         <Box
             sx={{
@@ -39,7 +16,7 @@ export const SaveTierList = (props: SaveTierListProps) => {
                 gap: '20px'
             }}
         >
-            <Fab variant="extended" onClick={onSubmit}>
+            <Fab variant="extended" onClick={props.onSave}>
                 <SaveIcon sx={{ mr: 1 }} />
                 Save
             </Fab>
