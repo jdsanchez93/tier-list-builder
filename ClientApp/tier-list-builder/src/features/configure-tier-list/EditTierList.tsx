@@ -7,7 +7,7 @@ import { ConfigureTierList } from './ConfigureTierList';
 export default function EditTierList() {
 
     const { tierListId } = useParams();
-    const { data: tierList, isSuccess, isLoading } = useGetTierListByIdQuery(tierListId);
+    const { data: tierList, isSuccess, isLoading } = useGetTierListByIdQuery(tierListId || '');
 
     let content;
 

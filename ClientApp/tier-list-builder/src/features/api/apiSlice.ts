@@ -18,8 +18,7 @@ export const apiSlice = createApi({
             }),
             invalidatesTags: ['AllTierLists']
         }),
-        // TODO review (string | undefined)
-        getTierListById: builder.query<TierList, string | undefined>({
+        getTierListById: builder.query<TierList, string>({
             query: (x) => `TierList/${x}`
         }),
         editTierList: builder.mutation<TierList, Partial<TierList>>({
