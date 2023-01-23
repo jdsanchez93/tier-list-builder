@@ -18,15 +18,7 @@ jobs:
       with:
         fetch-depth: 0
 
-    - name: Version pr
-      if: ${{ github.event_name == 'pull_request' }}
-      id: version-pr
-      uses: paulhatch/semantic-version@v5.0.3
-      with:
-        namespace: ${{ github.event.pull_request.head.ref }}
-
     - name: Version
-      if: ${{ github.event_name == 'push' }}
       id: version
       uses: paulhatch/semantic-version@v5.0.3
 
@@ -41,7 +33,8 @@ jobs:
       shell: bash
       run: ./build-scripts/docker.sh $VERSION $VERSION_TAG
       env:
-        VERSION: "${{ github.event_name == 'push' && steps.version.outputs.version || steps.version-pr.outputs.version }}"
+        PR_VERSION: ${{ steps.version.outputs.version }}-pre-${{ github.event.pull_request.head.ref }}+${{ steps.version.outputs.current_commit }}
+        VERSION: "${{ github.event_name == 'push' && steps.version.outputs.version || $PR_VERSION }}"
         VERSION_TAG: "${{ github.event_name == 'push' && steps.version.outputs.version_tag || '' }}"
 
     - name: Configure AWS credentials
