@@ -33,7 +33,7 @@ jobs:
       shell: bash
       run: ./build-scripts/docker.sh $VERSION $VERSION_TAG
       env:
-        VERSION: "${{ github.event_name == 'push' && steps.version.outputs.version || ${{ steps.version.outputs.version }}-pre+${{ steps.version.outputs.increment }} }}"
+        VERSION: "${{ github.event_name == 'push' && steps.version.outputs.version || format('{0}-pre+{1}', steps.version.outputs.version, steps.version.outputs.increment) }}"
         VERSION_TAG: "${{ github.event_name == 'push' && steps.version.outputs.version_tag || '' }}"
 
     - name: Configure AWS credentials
