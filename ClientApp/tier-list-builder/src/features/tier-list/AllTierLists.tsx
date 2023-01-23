@@ -1,5 +1,6 @@
 import { List, ListItem, ListItemButton, ListItemText } from '@mui/material';
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { useGetTierListsQuery } from '../api/apiSlice';
 
 export function AllTierLists() {
@@ -18,7 +19,10 @@ export function AllTierLists() {
   } else if (isSuccess) {
     content = tierLists.map(t => (
       <ListItem disablePadding key={t.tierListId}>
-        <ListItemButton>
+        <ListItemButton
+          component={Link}
+          to={`/tier-list/edit/${t.tierListId}`}
+        >
           <ListItemText primary={t.name} />
         </ListItemButton>
       </ListItem>
