@@ -16,4 +16,4 @@ if [ ! -z "$2" ]; then
     git push origin --tags
 fi
 
-echo "::set-output name=image::$IMAGE_NAME"
+echo "image=$IMAGE_NAME" >> $GITHUB_OUTPUT
