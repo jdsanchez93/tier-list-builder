@@ -33,6 +33,13 @@ export const apiSlice = createApi({
                 });
             }
         }),
+        putTierList: builder.mutation<TierList, TierList>({
+            query: (x: TierList) => ({
+                url: `/TierList/${x.tierListId}`,
+                method: 'PUT',
+                body: x
+            })
+        })
     })
 });
 
@@ -40,7 +47,8 @@ export const {
     useGetTierListsQuery,
     usePostTierListMutation,
     useGetTierListByIdQuery,
-    useEditTierListMutation
+    useEditTierListMutation,
+    usePutTierListMutation
 } = apiSlice;
 
 interface PatchItem {
