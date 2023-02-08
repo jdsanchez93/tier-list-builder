@@ -4,7 +4,7 @@ import { TierList } from '../tier-list/TierList.models';
 export const apiSlice = createApi({
     reducerPath: 'api',
     baseQuery: fetchBaseQuery({ baseUrl: '/api' }),
-    tagTypes: ['AllTierLists'],
+    tagTypes: ['AllTierLists', 'TierList'],
     endpoints: builder => ({
         getTierLists: builder.query<TierList[], void>({
             query: () => 'TierList/GetAll',
@@ -19,7 +19,8 @@ export const apiSlice = createApi({
             invalidatesTags: ['AllTierLists']
         }),
         getTierListById: builder.query<TierList, string>({
-            query: (x) => `TierList/${x}`
+            query: (x) => `TierList/${x}`,
+            providesTags: (result, error, arg) => [{ type: 'TierList', id: result?.tierListId }]
         }),
         editTierList: builder.mutation<TierList, Partial<TierList>>({
             query: (x: Partial<TierList>) => {
@@ -38,7 +39,8 @@ export const apiSlice = createApi({
                 url: `/TierList/${x.tierListId}`,
                 method: 'PUT',
                 body: x
-            })
+            }),
+            invalidatesTags: (result, error, arg) => [{ type: 'TierList', id: result?.tierListId }]
         })
     })
 });

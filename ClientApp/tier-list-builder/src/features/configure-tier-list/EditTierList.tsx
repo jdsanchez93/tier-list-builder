@@ -7,7 +7,7 @@ import { ConfigureTierList } from './ConfigureTierList';
 export default function EditTierList() {
 
     const { tierListId } = useParams();
-    const { data: tierList, isSuccess, isLoading } = useGetTierListByIdQuery(tierListId || '');
+    const { data: tierList, isSuccess, isLoading, fulfilledTimeStamp } = useGetTierListByIdQuery(tierListId ?? '');
 
     let content;
 
@@ -16,7 +16,7 @@ export default function EditTierList() {
         content = <CircularProgress />
     } else if (isSuccess) {
         content = (
-            <ConfigureTierList tierList={tierList} />
+            <ConfigureTierList tierList={tierList} key={fulfilledTimeStamp} />
         );
     }
 
