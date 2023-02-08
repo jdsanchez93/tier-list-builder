@@ -28,7 +28,7 @@ public class TierListController : ControllerBase
         }
         catch (System.Exception e)
         {
-            _logger.LogError("Get", e);
+            _logger.LogError(e, "GetAll");
             return StatusCode(StatusCodes.Status500InternalServerError);
         }
     }
@@ -48,7 +48,7 @@ public class TierListController : ControllerBase
         }
         catch (System.Exception e)
         {
-            _logger.LogError("Get", e);
+            _logger.LogError(e, "Get");
             return StatusCode(StatusCodes.Status500InternalServerError);
         }
     }
@@ -64,7 +64,7 @@ public class TierListController : ControllerBase
         }
         catch (System.Exception e)
         {
-            _logger.LogError("Post", e);
+            _logger.LogError(e, "Post");
             return StatusCode(StatusCodes.Status500InternalServerError);
         }
     }
@@ -83,7 +83,7 @@ public class TierListController : ControllerBase
         }
         catch (System.Exception e)
         {
-            _logger.LogError("Delete", e);
+            _logger.LogError(e, "Delete");
             return StatusCode(StatusCodes.Status500InternalServerError);
         }
     }
@@ -102,7 +102,7 @@ public class TierListController : ControllerBase
         }
         catch (System.Exception e)
         {
-            _logger.LogError("Patch", e);
+            _logger.LogError(e, "Patch");
             return StatusCode(StatusCodes.Status500InternalServerError);
         }
     }
@@ -122,7 +122,68 @@ public class TierListController : ControllerBase
         }
         catch (System.Exception e)
         {
-            _logger.LogError("GetPositionalTierListItem", e);
+            _logger.LogError(e, "GetPositionalTierListItem");
+            return StatusCode(StatusCodes.Status500InternalServerError);
+        }
+    }
+
+    [HttpPut("{id}")]
+    public async Task<IActionResult> PutTierList([FromRoute] int id, [FromBody] TierList updatedTierList)
+    {
+        try
+        {
+            var tierList = _context.TierLists
+                .Include(t => t.TierListRows)
+                .FirstOrDefault(t => t.TierListId == id);
+            if (tierList == null)
+            {
+                return NotFound();
+            }
+
+            tierList.Name = updatedTierList.Name;
+
+            IEnumerable<int> previousRowIds = new List<int>();
+            if (tierList.TierListRows != null && tierList.TierListRows.Any())
+            {
+                previousRowIds = tierList.TierListRows
+                    .Select(r => r.TierListRowId);
+            }
+
+            IEnumerable<int> currentRowIds = new List<int>();
+            if (updatedTierList.TierListRows != null && updatedTierList.TierListRows.Any())
+            {
+                currentRowIds = updatedTierList.TierListRows
+                    .Where(r => r.TierListRowId != 0)
+                    .Select(r => r.TierListRowId);
+            }
+
+            // find existing ids that were removed
+            var removedIds = previousRowIds.Except(currentRowIds);
+            tierList.TierListRows?
+                .Where(r => removedIds.Contains(r.TierListRowId))
+                .ToList()
+                .ForEach(r => _context.Remove(r));
+
+            // find existing ids that were updated
+            var updatedIds = previousRowIds.Intersect(currentRowIds);
+            tierList.TierListRows?
+                .Where(r => updatedIds.Contains(r.TierListRowId))
+                .ToList()
+                .ForEach(r => _context.Update(r));
+
+            // add new rows (row id is 0)
+            updatedTierList.TierListRows?
+                .Where(r => r.TierListRowId == 0)
+                .ToList()
+                .ForEach(r => _context.TierListRows.Add(r));
+
+            await _context.SaveChangesAsync();
+
+            return Ok(tierList);
+        }
+        catch (System.Exception e)
+        {
+            _logger.LogError(e, "PutTierList");
             return StatusCode(StatusCodes.Status500InternalServerError);
         }
     }

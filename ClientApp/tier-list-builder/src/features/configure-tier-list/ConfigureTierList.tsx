@@ -4,7 +4,7 @@ import { DraggableTierListRows } from './DraggableTierListRows';
 import { ConfigureTierListForm } from './ConfigureTierListForm';
 import { SaveTierList } from './SaveTierList';
 import { TierList, TierListRow } from '../tier-list/TierList.models';
-import { useEditTierListMutation, usePostTierListMutation } from '../api/apiSlice';
+import { usePostTierListMutation, usePutTierListMutation } from '../api/apiSlice';
 
 interface ConfigureTierListProps {
     tierList: TierList;
@@ -41,8 +41,8 @@ export function ConfigureTierList(props: ConfigureTierListProps) {
         [tierListState.tierListRows, tierListState.tierListId]
     );
 
-    const [patchTierList] = useEditTierListMutation();
     const [createTierList] = usePostTierListMutation();
+    const [putTierList] = usePutTierListMutation(); 
 
     const onSave = async () => {
         try {
@@ -56,7 +56,7 @@ export function ConfigureTierList(props: ConfigureTierListProps) {
                 createTierList(partialTierList);
                 return;
             }
-            patchTierList(partialTierList);
+            putTierList(tierListState);
         } catch (error) {
             console.error(error);
         }

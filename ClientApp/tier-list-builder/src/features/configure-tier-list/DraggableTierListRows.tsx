@@ -133,7 +133,7 @@ export function DraggableTierListRows(props: DraggableTierListProps) {
                                             draggableSnapshot: DraggableStateSnapshot,
                                         ) => (
                                             <Box
-                                                sx={{ display: 'flex', gap: '10px' }}
+                                                sx={{ display: 'flex', gap: '10px', alignItems: 'center' }}
                                                 ref={draggableProvided.innerRef}
                                                 {...draggableProvided.draggableProps}
                                                 style={getItemStyle(
@@ -156,7 +156,10 @@ export function DraggableTierListRows(props: DraggableTierListProps) {
                                                 >
                                                     {item.name}
                                                 </Paper>
-                                                <IconButton aria-label="delete" onClick={() => deleteRow(index)}>
+                                                <IconButton
+                                                    aria-label="delete"
+                                                    onClick={() => deleteRow(index)}
+                                                >
                                                     <DeleteIcon />
                                                 </IconButton>
                                             </Box>

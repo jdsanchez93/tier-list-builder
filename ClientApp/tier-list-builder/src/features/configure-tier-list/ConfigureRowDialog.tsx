@@ -13,7 +13,7 @@ interface ConfigureRowDialogProps {
 
 export default function ConfigureRowDialog(props: ConfigureRowDialogProps) {
 
-    const { onClose, open, onChange, rows } = props;
+    const { onClose, open, onChange, rows, tierListId } = props;
 
     const onAdd = (x: TierListRow[]) => {
         onChange(x);
@@ -24,7 +24,7 @@ export default function ConfigureRowDialog(props: ConfigureRowDialogProps) {
         <Dialog open={open} onClose={onClose}>
             <DialogTitle>Configure Row</DialogTitle>
             <DialogContent>
-                <AddRowForm onChange={onAdd} rows={rows} tierListId={1} />
+                <AddRowForm onChange={onAdd} rows={rows} tierListId={tierListId} />
             </DialogContent>
         </Dialog>
     )

@@ -6,25 +6,24 @@ import AddIcon from '@mui/icons-material/Add';
 interface AddRowFormProps {
     tierListId: number;
     rows: TierListRow[];
-    onChange: (x: TierListRow[]) => void
+    onChange: (x: TierListRow[]) => void;
 }
 
 export function AddRowForm(props: AddRowFormProps) {
 
     const [name, setName] = useState('');
+    const [error, setError] = useState('');
 
     const onSubmit = () => {
 
         if (name === '') {
-            // TODO consider displaying error to user
-            console.error('Cannot have blank name');
+            setError('Name cannot be blank');
             return;
         }
 
         const duplicateRow = props.rows.find(r => r.name === name);
         if (duplicateRow !== undefined) {
-            // TODO consider displaying error to user
-            console.error('Cannot add duplicate row name:', duplicateRow.name);
+            setError(`Cannot add duplicate row name: ${duplicateRow.name}`);
             return;
         }
 
@@ -53,6 +52,8 @@ export function AddRowForm(props: AddRowFormProps) {
                 value={name}
                 onChange={e => setName(e.target.value)}
                 autoComplete="off"
+                helperText={error}
+                error={error !== ''}
             />
 
             <Button
