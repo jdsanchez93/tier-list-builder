@@ -1,12 +1,16 @@
 import { Box, Button, Typography } from '@mui/material';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
+import { usePostUploadMutation, usePutTierListMutation } from '../api/apiSlice';
 
 export default function ConfigureTierListItems(props: any) {
     const [file, setFile] = useState<File | null>(null);
 
-    const [preview, setPreview] = useState<any>(null)
+    const [preview, setPreview] = useState<any>(null);
+    const [postUpload] = usePostUploadMutation();
+    const [s3ObjectName, setS3ObjectName] = useState('');
 
+    // TODO review if useEffect is necessary
     useEffect(() => {
         if (file) {
             const reader = new FileReader();
@@ -23,30 +27,23 @@ export default function ConfigureTierListItems(props: any) {
         if (event.target.files === null) {
             console.error('No files')
             return;
-        }
-        console.log('event', event.target.files)
+        };
         setFile(event.target.files[0]);
     };
 
-    const onFileUpload = () => {
-        const apiGatewayUrl = '';
+    const onFileUpload = async () => {
+        if (file == null) {
+            console.error('cannot upload, file is null');
+            return;
+        }
 
-        const apiGatewayResponse = axios.post(apiGatewayUrl, { data: 'test' });
-
-        apiGatewayResponse
-            .then(x => {
-                console.log('response', x);
+        await postUpload({ tierListId: 1, extension: ".jpg" }).unwrap()
+            .then(({uploadUrl, s3ObjectName}) => {
+                setS3ObjectName(s3ObjectName);
+                return axios.put(uploadUrl, file)
             })
+            .then(x => console.log('upload response', x))
             .catch(x => console.error(x))
-
-
-        // const formData = new FormData();
-        // if (file == null) {
-        //     console.error('cannot upload, file is null');
-        //     return;
-        // }
-        // formData.append("image", file, file.name);
-        // axios.put(url, file)
     }
 
     let content;
@@ -65,6 +62,8 @@ export default function ConfigureTierListItems(props: any) {
     return (
         <Box>
             <Typography variant="h5">Tier List Items</Typography>
+
+            <Typography variant="body1">{s3ObjectName}</Typography>
 
             {content}
 

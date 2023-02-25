@@ -41,6 +41,13 @@ export const apiSlice = createApi({
                 body: x
             }),
             invalidatesTags: (result, error, arg) => [{ type: 'TierList', id: result?.tierListId }]
+        }),
+        postUpload: builder.mutation<ApiGatewayResponse, UploadData>({
+            query: (uploadData: UploadData) => ({
+                url: `/Upload`,
+                method: 'POST',
+                body: uploadData
+            })
         })
     })
 });
@@ -50,7 +57,8 @@ export const {
     usePostTierListMutation,
     useGetTierListByIdQuery,
     useEditTierListMutation,
-    usePutTierListMutation
+    usePutTierListMutation,
+    usePostUploadMutation
 } = apiSlice;
 
 interface PatchItem {
@@ -66,4 +74,14 @@ function getPatchItems(x: any): PatchItem[] {
             'value': (x)[key]
         })
     );
+}
+
+export interface UploadData {
+    tierListId: number;
+    extension: string;
+}
+
+export interface ApiGatewayResponse {
+    s3ObjectName: string;
+    uploadUrl: string;
 }
