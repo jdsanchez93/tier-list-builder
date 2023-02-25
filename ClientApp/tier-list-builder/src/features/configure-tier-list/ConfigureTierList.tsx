@@ -5,7 +5,7 @@ import { ConfigureTierListForm } from './ConfigureTierListForm';
 import { SaveTierList } from './SaveTierList';
 import { TierList, TierListRow } from '../tier-list/TierList.models';
 import { usePostTierListMutation, usePutTierListMutation } from '../api/apiSlice';
-import ConfigureTierListItems from '../tier-list-items/ConfigureTierListItems';
+import AddTierListItem from '../tier-list-items/AddTierListItem';
 
 interface ConfigureTierListProps {
     tierList: TierList;
@@ -69,7 +69,7 @@ export function ConfigureTierList(props: ConfigureTierListProps) {
         >
             {configName}
             {draggableRows}
-            <ConfigureTierListItems />
+            <AddTierListItem />
             <SaveTierList onSave={onSave} />
         </Box>
     );

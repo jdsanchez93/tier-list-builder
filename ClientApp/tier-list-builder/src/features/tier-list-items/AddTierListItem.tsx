@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { usePostUploadMutation, usePutTierListMutation } from '../api/apiSlice';
 import ImageIcon from '@mui/icons-material/Image';
 
-export default function ConfigureTierListItems(props: any) {
+export default function AddTierListItem(props: any) {
     const [file, setFile] = useState<File | null>(null);
 
     const [preview, setPreview] = useState<any>(null);
