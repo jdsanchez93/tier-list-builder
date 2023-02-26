@@ -10,3 +10,10 @@ export interface TierListRow {
   index: number;
   tierListId: number;
 }
+
+export interface TierListItem {
+  tierListItemId: number;
+  name: string;
+  imageUrl: string;
+  tierListId: number;
+}

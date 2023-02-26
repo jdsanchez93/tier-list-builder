@@ -69,7 +69,7 @@ export function ConfigureTierList(props: ConfigureTierListProps) {
         >
             {configName}
             {draggableRows}
-            <AddTierListItem />
+            <AddTierListItem tierListId={tierListState.tierListId} />
             <SaveTierList onSave={onSave} />
         </Box>
     );

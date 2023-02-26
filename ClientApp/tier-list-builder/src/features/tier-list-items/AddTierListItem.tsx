@@ -1,15 +1,18 @@
-import { Avatar, Box, Button, Card, CardActions, CardContent, CardHeader, Paper, TextField, Typography } from '@mui/material';
+import { Avatar, Box, Button, Card, CardActions, CardContent, CardHeader, TextField } from '@mui/material';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { usePostUploadMutation, usePutTierListMutation } from '../api/apiSlice';
+import { usePostItemMutation, usePostUploadMutation } from '../api/apiSlice';
 import ImageIcon from '@mui/icons-material/Image';
 
-export default function AddTierListItem(props: any) {
+interface AddTierListItemProps {
+    tierListId: number;
+}
+export default function AddTierListItem({ tierListId }: AddTierListItemProps) {
     const [file, setFile] = useState<File | null>(null);
     const [preview, setPreview] = useState<any>(null);
-    const [s3ObjectName, setS3ObjectName] = useState('');
     const [name, setName] = useState('');
     const [postUpload] = usePostUploadMutation();
+    const [postItem] = usePostItemMutation();
 
     // TODO review if useEffect is necessary
     useEffect(() => {
@@ -26,7 +29,7 @@ export default function AddTierListItem(props: any) {
 
     const onFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.files === null || event.target.files.length === 0) {
-            console.error('No files')
+            console.error('No file selected')
             return;
         };
         setFile(event.target.files[0]);
@@ -39,13 +42,14 @@ export default function AddTierListItem(props: any) {
             return;
         }
 
-        await postUpload({ tierListId: 1, extension: ".jpg" }).unwrap()
-            .then(({ uploadUrl, s3ObjectName }) => {
-                setS3ObjectName(s3ObjectName);
-                return axios.put(uploadUrl, file)
-            })
-            .then(x => console.log('upload response', x))
-            .catch(x => console.error(x))
+        try {
+            const { uploadUrl, s3ObjectName } = await postUpload({ tierListId: 1, extension: ".jpg" }).unwrap();
+            await axios.put(uploadUrl, file);
+            await postItem({ tierListItemId: 0, tierListId, imageUrl: s3ObjectName, name }).unwrap();
+        } catch (err) {
+            console.error('Failed to save item: ', err);
+            // TODO snackbar
+        }
     }
 
     return (
@@ -53,7 +57,7 @@ export default function AddTierListItem(props: any) {
             <CardHeader
                 title="Add Item"
             />
-            <CardContent sx={{ display: 'grid', gap: '10px' }}>
+            <CardContent sx={{ display: 'grid', gap: '20px' }}>
 
                 <TextField
                     id="tier-list-item-name"

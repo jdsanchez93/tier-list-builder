@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { TierList } from '../tier-list/TierList.models';
+import { TierList, TierListItem } from '../tier-list/TierList.models';
 
 export const apiSlice = createApi({
     reducerPath: 'api',
@@ -48,6 +48,13 @@ export const apiSlice = createApi({
                 method: 'POST',
                 body: uploadData
             })
+        }),
+        postItem: builder.mutation<TierListItem, TierListItem>({
+            query: (x) => ({
+                url: '/TierListItem',
+                method: 'POST',
+                body: x
+            })
         })
     })
 });
@@ -58,7 +65,8 @@ export const {
     useGetTierListByIdQuery,
     useEditTierListMutation,
     usePutTierListMutation,
-    usePostUploadMutation
+    usePostUploadMutation,
+    usePostItemMutation
 } = apiSlice;
 
 interface PatchItem {
