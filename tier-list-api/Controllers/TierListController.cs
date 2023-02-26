@@ -107,12 +107,12 @@ public class TierListController : ControllerBase
         }
     }
 
-    [HttpGet("GetPositionalTierListItems/{tierListId}")]
-    public IActionResult GetPositionalTierListItems([FromRoute] int tierListId)
+    [HttpGet("GetTierListItems/{tierListId}")]
+    public IActionResult GetTierListItems([FromRoute] int tierListId)
     {
         try
         {
-            var query = from i in _context.PositionalTierListItems
+            var query = from i in _context.TierListItems
                         join t in _context.TierLists
                             on i.TierListId equals t.TierListId
                         where i.TierListId == tierListId
@@ -122,7 +122,7 @@ public class TierListController : ControllerBase
         }
         catch (System.Exception e)
         {
-            _logger.LogError(e, "GetPositionalTierListItem");
+            _logger.LogError(e, "GetTierListItems");
             return StatusCode(StatusCodes.Status500InternalServerError);
         }
     }

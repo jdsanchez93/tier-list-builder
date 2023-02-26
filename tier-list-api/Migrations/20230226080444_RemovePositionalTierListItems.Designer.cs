@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using tier_list_api;
 
@@ -10,9 +11,10 @@ using tier_list_api;
 namespace tier_list_api.Migrations
 {
     [DbContext(typeof(TierListDbContext))]
-    partial class TierListDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230226080444_RemovePositionalTierListItems")]
+    partial class RemovePositionalTierListItems
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -32,29 +34,6 @@ namespace tier_list_api.Migrations
                     b.HasKey("TierListId");
 
                     b.ToTable("TierList");
-                });
-
-            modelBuilder.Entity("tier_list_api.Entities.TierListItem", b =>
-                {
-                    b.Property<int>("TierListItemId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<string>("ImageUrl")
-                        .HasMaxLength(500)
-                        .HasColumnType("varchar(500)");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("longtext");
-
-                    b.Property<int>("TierListId")
-                        .HasColumnType("int");
-
-                    b.HasKey("TierListItemId");
-
-                    b.HasIndex("TierListId");
-
-                    b.ToTable("TierListItem");
                 });
 
             modelBuilder.Entity("tier_list_api.Entities.TierListRow", b =>
@@ -78,17 +57,6 @@ namespace tier_list_api.Migrations
                     b.HasIndex("TierListId");
 
                     b.ToTable("TierListRow");
-                });
-
-            modelBuilder.Entity("tier_list_api.Entities.TierListItem", b =>
-                {
-                    b.HasOne("tier_list_api.Entities.TierList", "TierList")
-                        .WithMany()
-                        .HasForeignKey("TierListId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("TierList");
                 });
 
             modelBuilder.Entity("tier_list_api.Entities.TierListRow", b =>
