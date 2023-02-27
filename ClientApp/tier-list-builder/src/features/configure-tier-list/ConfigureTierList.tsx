@@ -6,6 +6,7 @@ import { SaveTierList } from './SaveTierList';
 import { TierList, TierListRow } from '../tier-list/TierList.models';
 import { usePostTierListMutation, usePutTierListMutation } from '../api/apiSlice';
 import AddTierListItem from '../tier-list-items/AddTierListItem';
+import ItemImageList from '../tier-list-items/ItemImageList';
 
 interface ConfigureTierListProps {
     tierList: TierList;
@@ -70,6 +71,7 @@ export function ConfigureTierList(props: ConfigureTierListProps) {
             {configName}
             {draggableRows}
             <AddTierListItem tierListId={tierListState.tierListId} />
+            <ItemImageList tierListId={tierListState.tierListId} />
             <SaveTierList onSave={onSave} />
         </Box>
     );

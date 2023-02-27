@@ -55,6 +55,10 @@ export const apiSlice = createApi({
                 method: 'POST',
                 body: x
             })
+        }),
+        getItemsByTierListId: builder.query<TierListItem[], number>({
+            query: (x) => `/TierList/GetTierListItems/${x}`
+            // TODO consider tags
         })
     })
 });
@@ -66,7 +70,8 @@ export const {
     useEditTierListMutation,
     usePutTierListMutation,
     usePostUploadMutation,
-    usePostItemMutation
+    usePostItemMutation,
+    useGetItemsByTierListIdQuery
 } = apiSlice;
 
 interface PatchItem {

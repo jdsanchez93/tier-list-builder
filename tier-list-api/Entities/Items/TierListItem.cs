@@ -13,6 +13,9 @@ public class TierListItem
     [MaxLength(500)]
     public string? ImageUrl { get; set; }
 
+    [NotMapped]
+    public string? PresignedUrl { get; set; }
+
     public int TierListId { get; set; }
 
     public TierList? TierList { get; set; }

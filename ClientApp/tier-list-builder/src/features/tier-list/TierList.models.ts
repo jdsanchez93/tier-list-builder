@@ -16,4 +16,5 @@ export interface TierListItem {
   name: string;
   imageUrl: string;
   tierListId: number;
+  presignedUrl?: string;
 }
