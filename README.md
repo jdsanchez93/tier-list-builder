@@ -20,7 +20,16 @@ Located in the tier-list-api directory
 This project is configured to use a mysql database.\
 The connection string can be configured via the ConnectionStrings__Mysql environment variable.
 
-For development, run `docker-compose up -d` to run a mysql db in docker.\
+For development, run `docker-compose up -d` to run a mysql db in docker.
+
+For development, this project can use Secrets Manager to store sensitive data: https://learn.microsoft.com/en-us/aspnet/core/security/app-secrets?view=aspnetcore-7.0&tabs=windows#secret-manager
+From the tier-list-api directory, you can run the following commands to set the required secrets:
+```
+dotnet user-secrets set "Aws:ApiGatewayUrl" "<value>"
+dotnet user-secrets set "Aws:BucketName" "<value>"
+```
+Alternatively, you may use environment variables to set these values.
+
 Launch the api in Visual Studio Code with launchSettings.json.\
 Runs on port 5230.
 
