@@ -4,14 +4,13 @@ import React, { useState } from 'react';
 import { usePostItemMutation, usePostUploadMutation } from '../api/apiSlice';
 import ImageIcon from '@mui/icons-material/Image';
 import SimpleSnackBar from '../global/SimpleSnackBar';
-import { green } from '@mui/material/colors';
 
-interface AddTierListItemProps {
+interface AddTierListItemDialogProps {
     tierListId: number;
     open: boolean;
     onClose: any;
 }
-export default function AddTierListItem({ tierListId, open, onClose }: AddTierListItemProps) {
+export default function AddTierListItemDialog({ tierListId, open, onClose }: AddTierListItemDialogProps) {
     const [file, setFile] = useState<File | null>(null);
     const [preview, setPreview] = useState<any>(null);
     const [name, setName] = useState('');
@@ -122,7 +121,6 @@ export default function AddTierListItem({ tierListId, open, onClose }: AddTierLi
                         <CircularProgress
                             size={24}
                             sx={{
-                                // color: green[500],
                                 position: 'absolute',
                                 top: '50%',
                                 left: '50%',

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Box, Button, Dialog, DialogContent, DialogTitle } from '@mui/material';
-import AddTierListItem from './AddTierListItem';
+import { Button, Card, CardActions, CardContent, Typography } from '@mui/material';
+import AddTierListItemDialog from './AddTierListItemDialog';
 import ItemImageList from './ItemImageList';
 
 interface ConfigureTierListItemsProps {
@@ -9,21 +9,27 @@ interface ConfigureTierListItemsProps {
 export default function ConfigureTierListItems({ tierListId }: ConfigureTierListItemsProps) {
     const [dialogOpen, setDialogOpen] = useState(false);
 
-
-    const onClose = () => {
-        setDialogOpen(false);
-    }
-
     return (
-        <Box>
-            <Button
-                id="add-item-button"
-                onClick={() => setDialogOpen(true)}
-            >
-                Add Item
-            </Button>
-            <AddTierListItem tierListId={tierListId} open={dialogOpen} onClose={onClose} />
-            <ItemImageList tierListId={tierListId} />
-        </Box>
+        <Card sx={{ width: 'fit-content', margin: '10px' }}>
+            <CardContent>
+                <Typography variant="h6" component="div" gutterBottom>
+                    Tier List Items
+                </Typography>
+                <ItemImageList tierListId={tierListId} />
+            </CardContent>
+
+            <CardActions>
+                <Button
+                    id="add-item-button"
+                    onClick={() => setDialogOpen(true)}
+                    size="small"
+                >
+                    Add Item
+                </Button>
+            </CardActions>
+
+            <AddTierListItemDialog tierListId={tierListId} open={dialogOpen} onClose={() => setDialogOpen(false)} />
+        </Card>
+
     );
 }
