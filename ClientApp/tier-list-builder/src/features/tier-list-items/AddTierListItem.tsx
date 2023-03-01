@@ -1,9 +1,10 @@
-import { Avatar, Box, Button, Card, CardActions, CardContent, CardHeader, TextField } from '@mui/material';
+import { Avatar, Box, Button, Card, CardActions, CardContent, CardHeader, CircularProgress, TextField } from '@mui/material';
 import axios from 'axios';
 import React, { useState } from 'react';
 import { usePostItemMutation, usePostUploadMutation } from '../api/apiSlice';
 import ImageIcon from '@mui/icons-material/Image';
 import SimpleSnackBar from '../global/SimpleSnackBar';
+import { green } from '@mui/material/colors';
 
 interface AddTierListItemProps {
     tierListId: number;
@@ -15,6 +16,9 @@ export default function AddTierListItem({ tierListId }: AddTierListItemProps) {
     const [postUpload] = usePostUploadMutation();
     const [postItem] = usePostItemMutation();
     const [snackbarOpen, setSnackbarOpen] = useState(false);
+
+    const [loading, setLoading] = React.useState(false);
+    const [success, setSuccess] = React.useState(false);
 
     const onFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.files === null || event.target.files.length === 0) {
@@ -40,6 +44,11 @@ export default function AddTierListItem({ tierListId }: AddTierListItemProps) {
             return;
         }
 
+        if (!loading) {
+            setSuccess(false);
+            setLoading(true);
+        }
+
         try {
             const { uploadUrl, s3ObjectName } = await postUpload({ tierListId: 1, extension: ".jpg" }).unwrap();
             await axios.put(uploadUrl, file);
@@ -47,6 +56,9 @@ export default function AddTierListItem({ tierListId }: AddTierListItemProps) {
         } catch (err) {
             console.error('Failed to save item: ', err);
             setSnackbarOpen(true);
+        } finally {
+            setSuccess(true);
+            setLoading(false);
         }
     }
 
@@ -90,14 +102,29 @@ export default function AddTierListItem({ tierListId }: AddTierListItemProps) {
 
             </CardContent>
             <CardActions>
-                <Button
-                    id="add-row-button"
-                    variant="outlined"
-                    onClick={onFileUpload}
-                    disabled={preview == null}
-                >
-                    Upload
-                </Button>
+                <Box sx={{ m: 1, position: 'relative' }}>
+                    <Button
+                        id="add-row-button"
+                        variant="contained"
+                        disabled={loading || preview == null || success}
+                        onClick={onFileUpload}
+                    >
+                        Save
+                    </Button>
+                    {loading && (
+                        <CircularProgress
+                            size={24}
+                            sx={{
+                                color: green[500],
+                                position: 'absolute',
+                                top: '50%',
+                                left: '50%',
+                                marginTop: '-12px',
+                                marginLeft: '-12px',
+                            }}
+                        />
+                    )}
+                </Box>
             </CardActions>
 
             <SimpleSnackBar
