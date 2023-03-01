@@ -1,6 +1,6 @@
 import { Avatar, Box, Button, Card, CardActions, CardContent, CardHeader, TextField } from '@mui/material';
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { usePostItemMutation, usePostUploadMutation } from '../api/apiSlice';
 import ImageIcon from '@mui/icons-material/Image';
 
@@ -14,26 +14,22 @@ export default function AddTierListItem({ tierListId }: AddTierListItemProps) {
     const [postUpload] = usePostUploadMutation();
     const [postItem] = usePostItemMutation();
 
-    // TODO review if useEffect is necessary
-    useEffect(() => {
-        if (file) {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                setPreview(reader.result as string);
-            };
-            reader.readAsDataURL(file);
-        } else {
-            setPreview(null)
-        }
-    }, [file]);
-
     const onFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.files === null || event.target.files.length === 0) {
-            console.error('No file selected')
+            setFile(null);
+            setName('');
+            setPreview(null);
             return;
         };
         setFile(event.target.files[0]);
         setName(event.target.files[0].name);
+
+        const reader = new FileReader();
+        reader.onloadend = () => {
+            setPreview(reader.result as string);
+        };
+        reader.readAsDataURL(event.target.files[0]);
+
     };
 
     const onFileUpload = async () => {
