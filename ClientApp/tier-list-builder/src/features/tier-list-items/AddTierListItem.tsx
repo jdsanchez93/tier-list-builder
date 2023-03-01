@@ -3,6 +3,7 @@ import axios from 'axios';
 import React, { useState } from 'react';
 import { usePostItemMutation, usePostUploadMutation } from '../api/apiSlice';
 import ImageIcon from '@mui/icons-material/Image';
+import SimpleSnackBar from '../global/SimpleSnackBar';
 
 interface AddTierListItemProps {
     tierListId: number;
@@ -13,6 +14,7 @@ export default function AddTierListItem({ tierListId }: AddTierListItemProps) {
     const [name, setName] = useState('');
     const [postUpload] = usePostUploadMutation();
     const [postItem] = usePostItemMutation();
+    const [snackbarOpen, setSnackbarOpen] = useState(false);
 
     const onFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.files === null || event.target.files.length === 0) {
@@ -44,7 +46,7 @@ export default function AddTierListItem({ tierListId }: AddTierListItemProps) {
             await postItem({ tierListItemId: 0, tierListId, imageUrl: s3ObjectName, name }).unwrap();
         } catch (err) {
             console.error('Failed to save item: ', err);
-            // TODO snackbar
+            setSnackbarOpen(true);
         }
     }
 
@@ -97,6 +99,13 @@ export default function AddTierListItem({ tierListId }: AddTierListItemProps) {
                     Upload
                 </Button>
             </CardActions>
+
+            <SimpleSnackBar
+                open={snackbarOpen}
+                onClose={() => setSnackbarOpen(false)}
+                message="Failed to save item"
+                severity={'error'}
+            />
 
         </Card>
     );
