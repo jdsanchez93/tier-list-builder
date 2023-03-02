@@ -27,6 +27,8 @@ From the tier-list-api directory, you can run the following commands to set the 
 ```
 dotnet user-secrets set "Aws:ApiGatewayUrl" "<value>"
 dotnet user-secrets set "Aws:BucketName" "<value>"
+dotnet user-secrets set "AWS_ACCESS_KEY_ID" "<value>"
+dotnet user-secrets set "AWS_SECRET_ACCESS_KEY" "<value>"
 ```
 Alternatively, you may use environment variables to set these values.
 
