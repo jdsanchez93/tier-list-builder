@@ -1,6 +1,5 @@
 import React from 'react';
-import { Alert, AlertColor, Button, IconButton, Snackbar } from '@mui/material';
-import CloseIcon from '@mui/icons-material/Close';
+import { Alert, AlertColor, Snackbar } from '@mui/material';
 
 interface SimpleSnackBarProps {
     open: boolean;
