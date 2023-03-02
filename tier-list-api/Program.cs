@@ -20,6 +20,8 @@ builder.Services.AddDbContext<TierListDbContext>(
         .EnableDetailedErrors()
 );
 
+builder.Services.AddHttpClient();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

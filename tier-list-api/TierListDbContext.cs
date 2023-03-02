@@ -7,7 +7,7 @@ namespace tier_list_api
     {
         public DbSet<TierList> TierLists => Set<TierList>();
         public DbSet<TierListRow> TierListRows => Set<TierListRow>();
-        public DbSet<PositionalTierListItem> PositionalTierListItems => Set<PositionalTierListItem>();
+        public DbSet<TierListItem> TierListItems => Set<TierListItem>();
 
         public TierListDbContext(DbContextOptions<TierListDbContext> dbContextOptions) : base(dbContextOptions)
         {

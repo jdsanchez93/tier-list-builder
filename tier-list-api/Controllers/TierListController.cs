@@ -1,3 +1,5 @@
+using Amazon.S3;
+using Amazon.S3.Model;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -11,11 +13,13 @@ public class TierListController : ControllerBase
 {
     private readonly ILogger<TierListController> _logger;
     private readonly TierListDbContext _context;
+    private readonly IConfiguration _configuration;
 
-    public TierListController(ILogger<TierListController> logger, TierListDbContext context)
+    public TierListController(ILogger<TierListController> logger, TierListDbContext context, IConfiguration configuration)
     {
         _logger = logger;
         _context = context;
+        _configuration = configuration;
     }
 
     [HttpGet("GetAll")]
@@ -107,24 +111,48 @@ public class TierListController : ControllerBase
         }
     }
 
-    [HttpGet("GetPositionalTierListItems/{tierListId}")]
-    public IActionResult GetPositionalTierListItems([FromRoute] int tierListId)
+    [HttpGet("GetTierListItems/{tierListId}")]
+    public IActionResult GetTierListItems([FromRoute] int tierListId)
     {
         try
         {
-            var query = from i in _context.PositionalTierListItems
+            var query = from i in _context.TierListItems
                         join t in _context.TierLists
                             on i.TierListId equals t.TierListId
                         where i.TierListId == tierListId
                         select i;
 
-            return Ok(query.ToList());
+            var bucketName = _configuration["Aws:BucketName"];
+            var s3Client = new AmazonS3Client();
+
+            List<TierListItem> items = query.ToList();
+            items.ForEach(i => i.PresignedUrl = GeneratePreSignedURL(bucketName, i.ImageUrl, s3Client, 1));
+
+            return Ok(items);
+        }
+        catch (AmazonS3Exception e)
+        {
+            _logger.LogError(e, "Error encountered on server when writing an object");
+            return StatusCode(StatusCodes.Status500InternalServerError);
         }
         catch (System.Exception e)
         {
-            _logger.LogError(e, "GetPositionalTierListItem");
+            _logger.LogError(e, "GetTierListItems");
             return StatusCode(StatusCodes.Status500InternalServerError);
         }
+    }
+
+    private static string GeneratePreSignedURL(string bucketName, string? objectKey, AmazonS3Client s3Client, double duration)
+    {
+        string urlString = "";
+        GetPreSignedUrlRequest request1 = new GetPreSignedUrlRequest
+        {
+            BucketName = bucketName,
+            Key = objectKey,
+            Expires = DateTime.UtcNow.AddHours(duration)
+        };
+        urlString = s3Client.GetPreSignedURL(request1);
+        return urlString;
     }
 
     [HttpPut("{id}")]

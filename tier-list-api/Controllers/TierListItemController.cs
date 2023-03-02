@@ -6,12 +6,12 @@ namespace tier_list_api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class PositionalTierListItemController : ControllerBase
+public class TierListItemController : ControllerBase
 {
-    private readonly ILogger<PositionalTierListItemController> _logger;
+    private readonly ILogger<TierListItemController> _logger;
     private readonly TierListDbContext _context;
 
-    public PositionalTierListItemController(ILogger<PositionalTierListItemController> logger, TierListDbContext context)
+    public TierListItemController(ILogger<TierListItemController> logger, TierListDbContext context)
     {
         _logger = logger;
         _context = context;
@@ -22,8 +22,8 @@ public class PositionalTierListItemController : ControllerBase
     {
         try
         {
-            var i = _context.PositionalTierListItems
-                .FirstOrDefault(i => i.PositionalTierListItemId == id);
+            var i = _context.TierListItems
+                .FirstOrDefault(i => i.TierListItemId == id);
 
             if (i == null)
                 return NotFound();
@@ -37,11 +37,11 @@ public class PositionalTierListItemController : ControllerBase
     }
 
     [HttpPost]
-    public IActionResult Post([FromBody] PositionalTierListItem i)
+    public IActionResult Post([FromBody] TierListItem i)
     {
         try
         {
-            _context.PositionalTierListItems.Add(i);
+            _context.TierListItems.Add(i);
             _context.SaveChanges();
             return Created("/api/PositionalTierListItem", i);
         }
@@ -57,11 +57,12 @@ public class PositionalTierListItemController : ControllerBase
     {
         try
         {
-            var i = _context.PositionalTierListItems.FirstOrDefault(t => t.PositionalTierListItemId == id);
+            var i = _context.TierListItems.FirstOrDefault(t => t.TierListItemId == id);
             if (i == null)
                 return NotFound();
-            _context.PositionalTierListItems.Remove(i);
+            _context.TierListItems.Remove(i);
             _context.SaveChanges();
+            // TODO delete object in s3
             return Ok();
         }
         catch (System.Exception e)
@@ -72,9 +73,9 @@ public class PositionalTierListItemController : ControllerBase
     }
 
     [HttpPatch("{id}")]
-    public IActionResult Patch([FromRoute] int id, [FromBody] JsonPatchDocument<PositionalTierListItem> patchDoc)
+    public IActionResult Patch([FromRoute] int id, [FromBody] JsonPatchDocument<TierListItem> patchDoc)
     {
-        var i = _context.PositionalTierListItems.Find(id);
+        var i = _context.TierListItems.Find(id);
         if (i == null)
             return NotFound();
         patchDoc.ApplyTo(i);

@@ -19,8 +19,15 @@
                 {
                     "name": "MYSQLCONNSTR_Mysql",
                     "valueFrom": "tier-list-builder-env-mysql-connection-string"
+                },
+                {
+                    "name": "Aws__ApiGatewayUrl",
+                    "valueFrom": "tier-list-builder-env-Aws-ApiGatewayUrl"
+                },
+                {
+                    "name": "Aws__BucketName",
+                    "valueFrom": "tier-list-builder-env-Aws-BucketName"
                 }
-
             ]
         }
     ],

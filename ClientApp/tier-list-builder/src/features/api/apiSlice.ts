@@ -1,10 +1,10 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { TierList } from '../tier-list/TierList.models';
+import { TierList, TierListItem } from '../tier-list/TierList.models';
 
 export const apiSlice = createApi({
     reducerPath: 'api',
     baseQuery: fetchBaseQuery({ baseUrl: '/api' }),
-    tagTypes: ['AllTierLists', 'TierList'],
+    tagTypes: ['AllTierLists', 'TierList', 'AllItems'],
     endpoints: builder => ({
         getTierLists: builder.query<TierList[], void>({
             query: () => 'TierList/GetAll',
@@ -41,6 +41,25 @@ export const apiSlice = createApi({
                 body: x
             }),
             invalidatesTags: (result, error, arg) => [{ type: 'TierList', id: result?.tierListId }]
+        }),
+        postUpload: builder.mutation<ApiGatewayResponse, UploadData>({
+            query: (uploadData: UploadData) => ({
+                url: `/Upload`,
+                method: 'POST',
+                body: uploadData
+            })
+        }),
+        postItem: builder.mutation<TierListItem, TierListItem>({
+            query: (x) => ({
+                url: '/TierListItem',
+                method: 'POST',
+                body: x
+            }),
+            invalidatesTags: ['AllItems']
+        }),
+        getItemsByTierListId: builder.query<TierListItem[], number>({
+            query: (x) => `/TierList/GetTierListItems/${x}`,
+            providesTags: ['AllItems']
         })
     })
 });
@@ -50,7 +69,10 @@ export const {
     usePostTierListMutation,
     useGetTierListByIdQuery,
     useEditTierListMutation,
-    usePutTierListMutation
+    usePutTierListMutation,
+    usePostUploadMutation,
+    usePostItemMutation,
+    useGetItemsByTierListIdQuery
 } = apiSlice;
 
 interface PatchItem {
@@ -66,4 +88,14 @@ function getPatchItems(x: any): PatchItem[] {
             'value': (x)[key]
         })
     );
+}
+
+interface UploadData {
+    tierListId: number;
+    extension: string;
+}
+
+interface ApiGatewayResponse {
+    s3ObjectName: string;
+    uploadUrl: string;
 }
