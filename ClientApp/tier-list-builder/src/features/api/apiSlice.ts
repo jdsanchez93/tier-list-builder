@@ -4,7 +4,7 @@ import { TierList, TierListItem } from '../tier-list/TierList.models';
 export const apiSlice = createApi({
     reducerPath: 'api',
     baseQuery: fetchBaseQuery({ baseUrl: '/api' }),
-    tagTypes: ['AllTierLists', 'TierList'],
+    tagTypes: ['AllTierLists', 'TierList', 'AllItems'],
     endpoints: builder => ({
         getTierLists: builder.query<TierList[], void>({
             query: () => 'TierList/GetAll',
@@ -54,11 +54,12 @@ export const apiSlice = createApi({
                 url: '/TierListItem',
                 method: 'POST',
                 body: x
-            })
+            }),
+            invalidatesTags: ['AllItems']
         }),
         getItemsByTierListId: builder.query<TierListItem[], number>({
-            query: (x) => `/TierList/GetTierListItems/${x}`
-            // TODO consider tags
+            query: (x) => `/TierList/GetTierListItems/${x}`,
+            providesTags: ['AllItems']
         })
     })
 });
@@ -89,12 +90,12 @@ function getPatchItems(x: any): PatchItem[] {
     );
 }
 
-export interface UploadData {
+interface UploadData {
     tierListId: number;
     extension: string;
 }
 
-export interface ApiGatewayResponse {
+interface ApiGatewayResponse {
     s3ObjectName: string;
     uploadUrl: string;
 }
