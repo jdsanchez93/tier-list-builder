@@ -60,6 +60,13 @@ export const apiSlice = createApi({
         getItemsByTierListId: builder.query<TierListItem[], number>({
             query: (x) => `/TierList/GetTierListItems/${x}`,
             providesTags: ['AllItems']
+        }),
+        deleteItem: builder.mutation<void, number>({
+            query: (tierListItemId: number) => ({
+                url: `/TierListItem/${tierListItemId}`,
+                method: 'DELETE'
+            }),
+            invalidatesTags: ['AllItems']
         })
     })
 });
@@ -72,7 +79,8 @@ export const {
     usePutTierListMutation,
     usePostUploadMutation,
     usePostItemMutation,
-    useGetItemsByTierListIdQuery
+    useGetItemsByTierListIdQuery,
+    useDeleteItemMutation
 } = apiSlice;
 
 interface PatchItem {
