@@ -1,3 +1,5 @@
+using Amazon.S3;
+using Amazon.S3.Model;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using tier_list_api.Entities;
@@ -10,11 +12,13 @@ public class TierListItemController : ControllerBase
 {
     private readonly ILogger<TierListItemController> _logger;
     private readonly TierListDbContext _context;
+    private readonly IConfiguration _configuration;
 
-    public TierListItemController(ILogger<TierListItemController> logger, TierListDbContext context)
+    public TierListItemController(ILogger<TierListItemController> logger, TierListDbContext context, IConfiguration configuration)
     {
         _logger = logger;
         _context = context;
+        _configuration = configuration;
     }
 
     [HttpGet("{id}")]
@@ -31,7 +35,7 @@ public class TierListItemController : ControllerBase
         }
         catch (System.Exception e)
         {
-            _logger.LogError("Get", e);
+            _logger.LogError(e, "Get");
             return StatusCode(StatusCodes.Status500InternalServerError);
         }
     }
@@ -47,29 +51,51 @@ public class TierListItemController : ControllerBase
         }
         catch (System.Exception e)
         {
-            _logger.LogError("Post", e);
+            _logger.LogError(e, "Post");
             return StatusCode(StatusCodes.Status500InternalServerError);
         }
     }
 
     [HttpDelete("{id}")]
-    public IActionResult Delete([FromRoute] int id)
+    public async Task<IActionResult> Delete([FromRoute] int id)
     {
         try
         {
             var i = _context.TierListItems.FirstOrDefault(t => t.TierListItemId == id);
             if (i == null)
                 return NotFound();
+
+            if (i.ImageUrl != null)
+            {
+                var bucketName = _configuration["Aws:BucketName"];
+                var s3Client = new AmazonS3Client();
+                await DeleteObjectNonVersionedBucketAsync(bucketName, i.ImageUrl, s3Client);
+            }
+
             _context.TierListItems.Remove(i);
-            _context.SaveChanges();
-            // TODO delete object in s3
+            await _context.SaveChangesAsync();
             return Ok();
+        }
+        catch (AmazonS3Exception e)
+        {
+            _logger.LogError(e, "Delete S3 error");
+            return StatusCode(StatusCodes.Status500InternalServerError);
         }
         catch (System.Exception e)
         {
-            _logger.LogError("Delete", e);
+            _logger.LogError(e, "Delete");
             return StatusCode(StatusCodes.Status500InternalServerError);
         }
+    }
+
+    private static async Task DeleteObjectNonVersionedBucketAsync(string bucketName, string keyName, AmazonS3Client s3Client)
+    {
+        var deleteObjectRequest = new DeleteObjectRequest
+        {
+            BucketName = bucketName,
+            Key = keyName
+        };
+        await s3Client.DeleteObjectAsync(deleteObjectRequest);
     }
 
     [HttpPatch("{id}")]
