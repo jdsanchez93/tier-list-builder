@@ -14,12 +14,14 @@ public class TierListController : ControllerBase
     private readonly ILogger<TierListController> _logger;
     private readonly TierListDbContext _context;
     private readonly IConfiguration _configuration;
+    private readonly IAmazonS3 _s3Client;
 
-    public TierListController(ILogger<TierListController> logger, TierListDbContext context, IConfiguration configuration)
+    public TierListController(ILogger<TierListController> logger, TierListDbContext context, IConfiguration configuration, IAmazonS3 s3Client)
     {
         _logger = logger;
         _context = context;
         _configuration = configuration;
+        _s3Client = s3Client;
     }
 
     [HttpGet("GetAll")]
@@ -123,10 +125,9 @@ public class TierListController : ControllerBase
                         select i;
 
             var bucketName = _configuration["Aws:BucketName"];
-            var s3Client = new AmazonS3Client();
 
             List<TierListItem> items = query.ToList();
-            items.ForEach(i => i.PresignedUrl = GeneratePreSignedURL(bucketName, i.ImageUrl, s3Client, 1));
+            items.ForEach(i => i.PresignedUrl = GeneratePreSignedURL(bucketName, i.ImageUrl, 1));
 
             return Ok(items);
         }
@@ -142,7 +143,7 @@ public class TierListController : ControllerBase
         }
     }
 
-    private static string GeneratePreSignedURL(string bucketName, string? objectKey, AmazonS3Client s3Client, double duration)
+    private string GeneratePreSignedURL(string bucketName, string? objectKey, double duration)
     {
         string urlString = "";
         GetPreSignedUrlRequest request1 = new GetPreSignedUrlRequest
@@ -151,7 +152,7 @@ public class TierListController : ControllerBase
             Key = objectKey,
             Expires = DateTime.UtcNow.AddHours(duration)
         };
-        urlString = s3Client.GetPreSignedURL(request1);
+        urlString = _s3Client.GetPreSignedURL(request1);
         return urlString;
     }
 

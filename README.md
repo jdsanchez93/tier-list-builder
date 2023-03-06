@@ -6,6 +6,7 @@
 2. npm: https://docs.npmjs.com/downloading-and-installing-node-js-and-npm
 2. docker: https://docs.docker.com/desktop/install/windows-install/
 3. .NET 6.0: https://dotnet.microsoft.com/en-us/download
+4. aws cli https://aws.amazon.com/cli/
 
 This project has two pieces:
 1. ASP.NET Core Web API (backend)
@@ -22,13 +23,18 @@ The connection string can be configured via the ConnectionStrings__Mysql environ
 
 For development, run `docker-compose up -d` to run a mysql db in docker.
 
+The api requires access to an S3 bucket. \
+You can configure a named profile using the AWS cli, e.g. `aws configure --profile tier-list-dev` \
+Reach out to the repository owner for the access key & secret key. And make sure to set a region.\
+Then set the `AWS:Profile` config via Secrets Manager as explained in the next section. \
+Alternatively, you can set the following environment variables: AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_DEFAULT_REGION
+
 For development, this project can use Secrets Manager to store sensitive data: https://learn.microsoft.com/en-us/aspnet/core/security/app-secrets?view=aspnetcore-7.0&tabs=windows#secret-manager
 From the tier-list-api directory, you can run the following commands to set the required secrets:
 ```
 dotnet user-secrets set "Aws:ApiGatewayUrl" "<value>"
 dotnet user-secrets set "Aws:BucketName" "<value>"
-dotnet user-secrets set "AWS_ACCESS_KEY_ID" "<value>"
-dotnet user-secrets set "AWS_SECRET_ACCESS_KEY" "<value>"
+dotnet user-secrets set "AWS:Profile" "tier-list-dev"
 ```
 Alternatively, you may use environment variables to set these values.
 
