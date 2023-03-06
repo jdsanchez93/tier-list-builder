@@ -13,12 +13,14 @@ public class TierListItemController : ControllerBase
     private readonly ILogger<TierListItemController> _logger;
     private readonly TierListDbContext _context;
     private readonly IConfiguration _configuration;
+    private readonly IAmazonS3 _s3Client;
 
-    public TierListItemController(ILogger<TierListItemController> logger, TierListDbContext context, IConfiguration configuration)
+    public TierListItemController(ILogger<TierListItemController> logger, TierListDbContext context, IConfiguration configuration, IAmazonS3 s3Client)
     {
         _logger = logger;
         _context = context;
         _configuration = configuration;
+        _s3Client = s3Client;
     }
 
     [HttpGet("{id}")]
@@ -68,8 +70,7 @@ public class TierListItemController : ControllerBase
             if (i.ImageUrl != null)
             {
                 var bucketName = _configuration["Aws:BucketName"];
-                var s3Client = new AmazonS3Client();
-                await DeleteObjectNonVersionedBucketAsync(bucketName, i.ImageUrl, s3Client);
+                await DeleteObjectNonVersionedBucketAsync(bucketName, i.ImageUrl);
             }
 
             _context.TierListItems.Remove(i);
@@ -88,14 +89,14 @@ public class TierListItemController : ControllerBase
         }
     }
 
-    private static async Task DeleteObjectNonVersionedBucketAsync(string bucketName, string keyName, AmazonS3Client s3Client)
+    private async Task DeleteObjectNonVersionedBucketAsync(string bucketName, string keyName)
     {
         var deleteObjectRequest = new DeleteObjectRequest
         {
             BucketName = bucketName,
             Key = keyName
         };
-        await s3Client.DeleteObjectAsync(deleteObjectRequest);
+        await _s3Client.DeleteObjectAsync(deleteObjectRequest);
     }
 
     [HttpPatch("{id}")]
