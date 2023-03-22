@@ -36,6 +36,7 @@ interface AddTierListItemDialogProps {
 }
 export default function AddTierListItemDialog({ tierListId, open, onClose }: AddTierListItemDialogProps) {
     const [name, setName] = useState('');
+    const [extension, setExtension] = useState('');
     const [postUpload] = usePostUploadMutation();
     const [postItem] = usePostItemMutation();
     const [snackbarOpen, setSnackbarOpen] = useState(false);
@@ -59,7 +60,11 @@ export default function AddTierListItemDialog({ tierListId, open, onClose }: Add
         if (event.target.files === null || event.target.files.length === 0) {
             return;
         };
-        setName(event.target.files[0].name);
+
+        const ext = event.target.files[0].name
+            .split('.')
+            .pop();
+        setExtension(ext ?? '');
 
         setCrop(undefined); // Makes crop preview update between images.
         const reader = new FileReader();
@@ -118,8 +123,7 @@ export default function AddTierListItemDialog({ tierListId, open, onClose }: Add
         }
 
         try {
-            // TODO extension
-            const { uploadUrl, s3ObjectName } = await postUpload({ tierListId: 1, extension: ".jpg" }).unwrap();
+            const { uploadUrl, s3ObjectName } = await postUpload({ tierListId: 1, extension: `.${extension}` }).unwrap();
             await axios.put(uploadUrl, blob);
             await postItem({ tierListItemId: 0, tierListId, imageUrl: s3ObjectName, name }).unwrap();
             onDialogClose();
@@ -136,7 +140,7 @@ export default function AddTierListItemDialog({ tierListId, open, onClose }: Add
             <DialogTitle id="add-item-dialog-title">
                 Add Item
             </DialogTitle>
-            <DialogContent sx={{ display: 'grid', gap: '20px' }} >
+            <DialogContent sx={{ display: 'grid', gap: '20px' }}>
                 <TextField
                     id="tier-list-item-name"
                     label="Name"
@@ -144,6 +148,7 @@ export default function AddTierListItemDialog({ tierListId, open, onClose }: Add
                     autoComplete="off"
                     value={name}
                     onChange={e => setName(e.target.value)}
+                    margin="dense"
                 />
 
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
